@@ -1,18 +1,18 @@
 # Laravel Admin Dashboard Template
 
-A modern, elegant admin dashboard template built with Laravel 12, Livewire, and Tailwind CSS. Features a dark mode design with reusable components and user management capabilities.
+A modern, elegant admin dashboard template built with Laravel 12, Blade, and Bootstrap 5. Features a dark mode design, reusable Blade components, and user management capabilities.
 
 ## ✨ Features
 
-- 🎨 **Modern Dark UI** - Beautiful, modern dark theme with glassmorphism effects
-- ⚡ **Livewire Components** - Dynamic, reactive components without writing JavaScript
-- 🔐 **Authentication** - Modern login system with form validation
+- 🎨 **Modern UI** - Beautiful, modern theme with glassmorphism effects
+- ⚡ **Blade + Controllers** - Server-rendered pages with clean Laravel controllers
+- 🔐 **Authentication** - Login and registration with server-side validation
 - 👥 **User Management** - Full CRUD operations for managing users
 - 🧩 **Reusable Components** - Extensive library of Blade components for rapid development
 - 📱 **Responsive Design** - Fully responsive layout that works on all devices
 - 🎯 **Component Library** - Pre-built UI components including:
   - Buttons, Inputs, Badges, Alerts
-  - Tables with sorting and pagination
+  - Tables with pagination
   - Modals, Cards, and Progress Bars
   - Sidebar navigation with sections
   - Topbar with user menu
@@ -20,7 +20,7 @@ A modern, elegant admin dashboard template built with Laravel 12, Livewire, and 
 ## 🚀 Tech Stack
 
 - **Backend**: Laravel 12 (PHP 8.2+)
-- **Frontend**: Livewire, Tailwind CSS 4.x
+- **Frontend**: Blade, Bootstrap 5, Alpine.js
 - **Build Tool**: Vite 7.x
 - **Testing**: Pest PHP
 
@@ -46,6 +46,7 @@ This will:
 - Create `.env` file from `.env.example`
 - Generate application key
 - Run database migrations
+- Create the public storage link for uploaded files
 - Install npm dependencies
 - Build frontend assets
 
@@ -56,7 +57,7 @@ If you prefer to set up manually:
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd new-admin-template
+   cd minimal-gravity-admin
    ```
 
 2. **Install PHP dependencies**
@@ -87,13 +88,20 @@ If you prefer to set up manually:
    php artisan migrate
    ```
 
-6. **Install npm dependencies and build assets**
+6. **Create the public storage link**
+   ```bash
+   php artisan storage:link
+   ```
+
+7. **Install npm dependencies and build assets**
    ```bash
    npm install
    npm run build
    ```
 
 ## 🏃 Running the Application
+
+> Make sure `APP_URL` in `.env` matches the URL you visit (for example `http://localhost:8000`). Uploaded avatars use this value when generating their public URLs.
 
 ### Development Mode
 
@@ -110,6 +118,22 @@ This command starts:
 - Vite dev server (hot module replacement)
 
 All services run concurrently with color-coded output.
+
+### Access from Other Devices (LAN)
+
+To make the development server reachable from a phone or another computer:
+
+```bash
+php artisan serve --host=0.0.0.0 --port=8000
+```
+
+Set `APP_URL` in `.env` to the host machine's LAN address, for example:
+
+```env
+APP_URL=http://192.168.1.31:8000
+```
+
+Then open `http://192.168.1.31:8000` from the other device. Make sure your firewall allows port `8000`.
 
 ### Individual Services
 
@@ -133,21 +157,20 @@ php artisan pail
 
 ```
 ├── app/
-│   ├── Http/Controllers/Admin/    # Admin controllers
-│   └── Livewire/                  # Livewire components
-│       ├── Admin/                 # Admin Livewire components
-│       │   └── UserManagement.php # User CRUD component
-│       └── Auth/                  # Auth Livewire components
-│           └── Login.php          # Login component
+│   └── Http/Controllers/
+│       ├── Admin/                 # Dashboard, users, profile, component docs
+│       ├── Auth/                  # Login and registration
+│       └── Guest/                 # Public landing page
 ├── resources/
-│   ├── css/                       # Global styles
-│   ├── js/                        # JavaScript files
 │   └── views/
-│       ├── admin/                 # Admin views
-│       ├── components/            # Reusable Blade components
-│       │   ├── admin/             # Admin UI components
-│       │   └── auth/              # Auth UI components
-│       └── livewire/              # Livewire views
+│       ├── admin/                 # Admin pages and partials
+│       ├── auth/                  # Login and register pages
+│       ├── guest/                 # Public pages
+│       └── components/
+│           ├── form/              # Form components
+│           ├── layout/            # Page layout components
+│           ├── layouts/           # App and guest layout wrappers
+│           └── ui/                # UI components
 ├── routes/
 │   └── web.php                    # Web routes
 └── database/
@@ -156,51 +179,45 @@ php artisan pail
 
 ## 🎨 Available Components
 
-### Admin Components
+### Layout Components
 
-Located in `resources/views/components/admin/`:
+Located in `resources/views/components/layout/`:
 
-- **Layout Components**
-  - `layout.blade.php` - Main admin layout wrapper
-  - `app.blade.php` - Layout for Livewire pages
-  - `sidebar.blade.php` - Sidebar navigation
-  - `topbar.blade.php` - Top navigation bar
+- `sidebar.blade.php` - Sidebar navigation
+- `topbar.blade.php` - Top navigation bar
+- `sidebar-link.blade.php` - Sidebar navigation links
+- `sidebar-section.blade.php` - Sidebar section headers
+- `page-header.blade.php` - Page header sections
+- `modern-card.blade.php` - Modern styled cards
+- `feature-card.blade.php` - Feature display cards
+- `stat-card.blade.php` - Statistics cards
+- `table-card.blade.php` - Table wrapper cards
+- `table.blade.php` - Data tables
+- `modal.blade.php` / `modal-form.blade.php` - Modal wrappers
 
-- **Navigation Components**
-  - `sidebar-link.blade.php` - Sidebar navigation links
-  - `sidebar-section.blade.php` - Sidebar section headers
+### UI Components
 
-- **UI Components**
-  - `button.blade.php` - Reusable button component
-  - `input.blade.php` - Form input component
-  - `badge.blade.php` - Status badges
-  - `alert.blade.php` - Alert messages
-  - `confirm-modal.blade.php` - Confirmation dialogs
-  - `progress-bar.blade.php` - Progress indicators
+Located in `resources/views/components/ui/`:
 
-- **Card Components**
-  - `modern-card.blade.php` - Modern styled cards
-  - `feature-card.blade.php` - Feature display cards
-  - `stat-card.blade.php` - Statistics cards
-  - `table-card.blade.php` - Table wrapper cards
-  - `page-header.blade.php` - Page header sections
+- `button.blade.php` - Reusable button component
+- `input.blade.php` - Form input component
+- `badge.blade.php` - Status badges
+- `alert.blade.php` - Alert messages
+- `confirm-modal.blade.php` - Confirmation dialogs
+- `progress-bar.blade.php` - Progress indicators
 
-- **Data Components**
-  - `table.blade.php` - Data tables with sorting
+### Layout Wrappers
 
-### Auth Components
-
-Located in `resources/views/components/auth/`:
-
-- `layout.blade.php` - Authentication layout wrapper
+- `resources/views/components/layouts/app.blade.php` - Authenticated admin layout
+- `resources/views/components/layouts/guest.blade.php` - Public/auth layout
 
 ## 🔑 Authentication
 
-The application includes a modern login system:
+The application includes a modern login and registration system:
 
-- **Route**: `/login`
-- **Component**: `App\Livewire\Auth\Login`
-- **View**: `resources/views/livewire/auth/login.blade.php`
+- **Routes**: `/login`, `/register`
+- **Controllers**: `App\Http\Controllers\Auth\LoginController`, `App\Http\Controllers\Auth\RegisterController`
+- **Views**: `resources/views/auth/login.blade.php`, `resources/views/auth/register.blade.php`
 
 Protected admin routes require authentication middleware.
 
@@ -209,13 +226,24 @@ Protected admin routes require authentication middleware.
 Full CRUD interface for managing users:
 
 - **Route**: `/admin/users`
-- **Component**: `App\Livewire\Admin\UserManagement`
+- **Controller**: `App\Http\Controllers\Admin\UserController`
 - **Features**:
   - Create new users
   - Edit existing users
   - Delete users
   - Search and filter
   - Pagination
+
+## 👤 Profile Management
+
+Users can manage their own account:
+
+- **Route**: `/admin/profile`
+- **Controller**: `App\Http\Controllers\Admin\ProfileController`
+- **Features**:
+  - Update name and email
+  - Upload or remove an avatar
+  - Change password
 
 ## 🧪 Testing
 
@@ -231,44 +259,41 @@ php artisan test
 
 ### Creating a New Admin Page
 
-1. Create a Livewire component:
+1. Create a controller:
    ```bash
-   php artisan make:livewire Admin/YourComponent
+   php artisan make:controller Admin/YourPageController
    ```
 
 2. Add a route in `routes/web.php`:
    ```php
-   Route::get('/admin/your-page', YourComponent::class)
+   Route::get('/admin/your-page', [YourPageController::class, 'index'])
        ->name('admin.your-page')
        ->middleware('auth');
    ```
 
-3. Use the admin layout in your view:
+3. Wrap your view with the admin layout:
    ```blade
-   <x-livewire-layout>
-       <x-page-header
-           title="Your Page Title"
-           description="Page description"
-       />
+   <x-layouts.app title="Your Page Title">
+       <x-layout.page-header title="Your Page Title" subtitle="Page description" />
 
-       <x-modern-card>
-           <!-- Your content -->
-       </x-modern-card>
-   </x-livewire-layout>
+       <x-layout.modern-card>
+           {{-- Your content --}}
+       </x-layout.modern-card>
+   </x-layouts.app>
    ```
 
 ### Using Component Examples
 
 **Button Component:**
 ```blade
-<x-button type="primary" size="md">
+<x-ui.button variant="primary" size="md">
     Save Changes
-</x-button>
+</x-ui.button>
 ```
 
 **Input Component:**
 ```blade
-<x-input
+<x-form.input
     label="Email"
     type="email"
     name="email"
@@ -278,9 +303,9 @@ php artisan test
 
 **Alert Component:**
 ```blade
-<x-alert type="success">
+<x-ui.alert variant="success">
     Operation completed successfully!
-</x-alert>
+</x-ui.alert>
 ```
 
 ## 🤝 Contributing
@@ -301,4 +326,4 @@ For issues, questions, or contributions, please open an issue on GitHub.
 
 ---
 
-**Built with ❤️ using Laravel and Livewire**
+**Built with ❤️ using Laravel and Bootstrap**

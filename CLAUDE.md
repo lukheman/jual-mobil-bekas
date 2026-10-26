@@ -8,11 +8,9 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 ## Foundational Context
 This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
 
-- php - 8.5.6
+- php - 8.5.12
 - laravel/framework (LARAVEL) - v12
 - laravel/prompts (PROMPTS) - v0
-- livewire/livewire (LIVEWIRE) - v4
-- livewire/volt (VOLT) - v1
 - laravel/mcp (MCP) - v0
 - laravel/pint (PINT) - v1
 - laravel/sail (SAIL) - v1
@@ -108,6 +106,13 @@ protected function isAccessible(User $user, ?string $path = null): bool
 ## Enums
 - Typically, keys in an Enum should be TitleCase. For example: `FavoritePerson`, `BestLake`, `Monthly`.
 
+=== tests rules ===
+
+## Test Enforcement
+
+- Every change must be programmatically tested. Write a new test or update an existing test, then run the affected tests to make sure they pass.
+- Run the minimum number of tests needed to ensure code quality and speed. Use `php artisan test --compact` with a specific filename or filter.
+
 === laravel/core rules ===
 
 ## Do Things the Laravel Way
@@ -174,177 +179,6 @@ protected function isAccessible(User $user, ?string $path = null): bool
 
 ### Models
 - Casts can and likely should be set in a `casts()` method on a model rather than the `$casts` property. Follow existing conventions from other models.
-
-=== livewire/core rules ===
-
-## Livewire
-
-- Use the `search-docs` tool to find exact version-specific documentation for how to write Livewire and Livewire tests.
-- Use the `php artisan make:livewire [Posts\CreatePost]` Artisan command to create new components.
-- State should live on the server, with the UI reflecting it.
-- All Livewire requests hit the Laravel backend; they're like regular HTTP requests. Always validate form data and run authorization checks in Livewire actions.
-
-## Livewire Best Practices
-- Livewire components require a single root element.
-- Use `wire:loading` and `wire:dirty` for delightful loading states.
-- Add `wire:key` in loops:
-
-    ```blade
-    @foreach ($items as $item)
-        <div wire:key="item-{{ $item->id }}">
-            {{ $item->name }}
-        </div>
-    @endforeach
-    ```
-
-- Prefer lifecycle hooks like `mount()`, `updatedFoo()` for initialization and reactive side effects:
-
-<code-snippet name="Lifecycle Hook Examples" lang="php">
-    public function mount(User $user) { $this->user = $user; }
-    public function updatedSearch() { $this->resetPage(); }
-</code-snippet>
-
-## Testing Livewire
-
-<code-snippet name="Example Livewire Component Test" lang="php">
-    Livewire::test(Counter::class)
-        ->assertSet('count', 0)
-        ->call('increment')
-        ->assertSet('count', 1)
-        ->assertSee(1)
-        ->assertStatus(200);
-</code-snippet>
-
-<code-snippet name="Testing Livewire Component Exists on Page" lang="php">
-    $this->get('/posts/create')
-    ->assertSeeLivewire(CreatePost::class);
-</code-snippet>
-
-=== volt/core rules ===
-
-## Livewire Volt
-
-- This project uses Livewire Volt for interactivity within its pages. New pages requiring interactivity must also use Livewire Volt.
-- Make new Volt components using `php artisan make:volt [name] [--test] [--pest]`.
-- Volt is a class-based and functional API for Livewire that supports single-file components, allowing a component's PHP logic and Blade templates to coexist in the same file.
-- Livewire Volt allows PHP logic and Blade templates in one file. Components use the `@volt` directive.
-- You must check existing Volt components to determine if they're functional or class-based. If you can't detect that, ask the user which they prefer before writing a Volt component.
-
-### Volt Functional Component Example
-
-<code-snippet name="Volt Functional Component Example" lang="php">
-@volt
-<?php
-use function Livewire\Volt\{state, computed};
-
-state(['count' => 0]);
-
-$increment = fn () => $this->count++;
-$decrement = fn () => $this->count--;
-
-$double = computed(fn () => $this->count * 2);
-?>
-
-<div>
-    <h1>Count: {{ $count }}</h1>
-    <h2>Double: {{ $this->double }}</h2>
-    <button wire:click="increment">+</button>
-    <button wire:click="decrement">-</button>
-</div>
-@endvolt
-</code-snippet>
-
-### Volt Class Based Component Example
-To get started, define an anonymous class that extends Livewire\Volt\Component. Within the class, you may utilize all of the features of Livewire using traditional Livewire syntax:
-
-<code-snippet name="Volt Class-based Volt Component Example" lang="php">
-use Livewire\Volt\Component;
-
-new class extends Component {
-    public $count = 0;
-
-    public function increment()
-    {
-        $this->count++;
-    }
-} ?>
-
-<div>
-    <h1>{{ $count }}</h1>
-    <button wire:click="increment">+</button>
-</div>
-</code-snippet>
-
-### Testing Volt & Volt Components
-- Use the existing directory for tests if it already exists. Otherwise, fallback to `tests/Feature/Volt`.
-
-<code-snippet name="Livewire Test Example" lang="php">
-use Livewire\Volt\Volt;
-
-test('counter increments', function () {
-    Volt::test('counter')
-        ->assertSee('Count: 0')
-        ->call('increment')
-        ->assertSee('Count: 1');
-});
-</code-snippet>
-
-<code-snippet name="Volt Component Test Using Pest" lang="php">
-declare(strict_types=1);
-
-use App\Models\{User, Product};
-use Livewire\Volt\Volt;
-
-test('product form creates product', function () {
-    $user = User::factory()->create();
-
-    Volt::test('pages.products.create')
-        ->actingAs($user)
-        ->set('form.name', 'Test Product')
-        ->set('form.description', 'Test Description')
-        ->set('form.price', 99.99)
-        ->call('create')
-        ->assertHasNoErrors();
-
-    expect(Product::where('name', 'Test Product')->exists())->toBeTrue();
-});
-</code-snippet>
-
-### Common Patterns
-
-<code-snippet name="CRUD With Volt" lang="php">
-<?php
-
-use App\Models\Product;
-use function Livewire\Volt\{state, computed};
-
-state(['editing' => null, 'search' => '']);
-
-$products = computed(fn() => Product::when($this->search,
-    fn($q) => $q->where('name', 'like', "%{$this->search}%")
-)->get());
-
-$edit = fn(Product $product) => $this->editing = $product->id;
-$delete = fn(Product $product) => $product->delete();
-
-?>
-
-<!-- HTML / UI Here -->
-</code-snippet>
-
-<code-snippet name="Real-Time Search With Volt" lang="php">
-    <flux:input
-        wire:model.live.debounce.300ms="search"
-        placeholder="Search..."
-    />
-</code-snippet>
-
-<code-snippet name="Loading States With Volt" lang="php">
-    <flux:button wire:click="save" wire:loading.attr="disabled">
-        <span wire:loading.remove>Save</span>
-        <span wire:loading>Saving...</span>
-    </flux:button>
-</code-snippet>
 
 === pint/core rules ===
 

@@ -1,6 +1,6 @@
 @props([
     'title' => 'AdminPro - Modern Admin Dashboard',
-    'description' => 'A beautiful, modern admin dashboard template built with Laravel, Livewire, and Tailwind CSS',
+    'description' => 'A beautiful, modern admin dashboard template built with Laravel and Bootstrap',
     'type' => 'guest',
 ])
 
@@ -766,6 +766,7 @@
         }
     </style>
     {{ $styles ?? '' }}
+    @stack('styles')
 </head>
 
 <body>
@@ -822,7 +823,7 @@
                             <i class="fas fa-layer-group"></i>
                             <span>AdminPro</span>
                         </a>
-                        <p>A modern, elegant admin dashboard template built with Laravel, Livewire, and Tailwind CSS.</p>
+                        <p>A modern, elegant admin dashboard template built with Laravel and Bootstrap.</p>
                     </div>
 
                     <div class="footer-links">
@@ -921,6 +922,7 @@
         });
     </script>
     {{ $scripts ?? '' }}
+    @stack('scripts')
 </body>
 
 </html>

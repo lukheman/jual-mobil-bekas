@@ -3,15 +3,16 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
     /**
@@ -57,7 +58,7 @@ class User extends Authenticatable
         return Str::of($this->name)
             ->explode(' ')
             ->take(2)
-            ->map(fn($word) => Str::substr($word, 0, 1))
+            ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
 
@@ -67,8 +68,9 @@ class User extends Authenticatable
     public function avatarUrl(): ?string
     {
         if ($this->avatar) {
-            return Storage::url($this->avatar);
+            return Storage::disk('public')->url($this->avatar);
         }
+
         return null;
     }
 
@@ -77,6 +79,6 @@ class User extends Authenticatable
      */
     public function hasAvatar(): bool
     {
-        return !empty($this->avatar);
+        return ! empty($this->avatar);
     }
 }

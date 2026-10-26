@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Livewire\Admin;
+namespace App\Http\Controllers\Admin;
 
-use Livewire\Attributes\Layout;
-use Livewire\Attributes\Title;
-use Livewire\Component;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
-#[Title('Component Documentation - AdminPro')]
-class ComponentDocs extends Component
+class ComponentDocsController extends Controller
 {
-    public string $activeSection = 'buttons';
-    public string $searchQuery = '';
-
-    public array $sections = [
+    /**
+     * Component documentation sections.
+     *
+     * @var array<string, array{label: string, icon: string, count: int}>
+     */
+    private const SECTIONS = [
         'buttons' => ['label' => 'Buttons', 'icon' => 'fas fa-hand-pointer', 'count' => 2],
         'badges' => ['label' => 'Badges', 'icon' => 'fas fa-tag', 'count' => 1],
         'alerts' => ['label' => 'Alerts', 'icon' => 'fas fa-exclamation-circle', 'count' => 1],
@@ -26,13 +26,20 @@ class ComponentDocs extends Component
         'media' => ['label' => 'Media & Upload', 'icon' => 'fas fa-image', 'count' => 2],
     ];
 
-    public function setSection(string $section): void
+    /**
+     * Display the component documentation.
+     */
+    public function __invoke(Request $request)
     {
-        $this->activeSection = $section;
-    }
+        $activeSection = (string) $request->query('section', 'buttons');
 
-    public function render()
-    {
-        return view('livewire.admin.component-docs');
+        if (! array_key_exists($activeSection, self::SECTIONS)) {
+            $activeSection = 'buttons';
+        }
+
+        return view('admin.component-docs', [
+            'sections' => self::SECTIONS,
+            'activeSection' => $activeSection,
+        ]);
     }
 }

@@ -6,8 +6,9 @@
     'cancelText' => 'Cancel',
     'variant' => 'danger',
     'icon' => 'fas fa-exclamation-triangle',
-    'onConfirm' => null,
-    'onCancel' => null
+    'action' => null,
+    'method' => 'DELETE',
+    'cancelUrl' => null
 ])
 
 @php
@@ -19,54 +20,45 @@
     $iconColor = $iconColors[$variant] ?? $iconColors['danger'];
 @endphp
 
-<div>
-    @if ($show)
+@if ($show)
+    <div class="modal-backdrop-custom">
+        <div class="modal-content-custom">
+            <div class="modal-header-custom">
+                <h5 class="modal-title-custom">
+                    <i class="{{ $icon }} me-2" style="color: {{ $iconColor }};"></i>
+                    {{ $title }}
+                </h5>
+                @if($cancelUrl)
+                    <a href="{{ $cancelUrl }}" class="modal-close-btn" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </a>
+                @endif
+            </div>
 
+            <p style="color: var(--text-secondary);">
+                {{ $message }}
+            </p>
 
-<div class="modal-backdrop-custom"
-    @isset($onCancel)
-        wire:click.self="{{ $onCancel }}"
-    @endisset
->
-    <div class="modal-content-custom" wire:click.stop>
-        <div class="modal-header-custom">
-            <h5 class="modal-title-custom">
-                <i class="{{ $icon }} me-2" style="color: {{ $iconColor }};"></i>
-                {{ $title }}
-            </h5>
-            <button type="button" class="modal-close-btn"
-                @isset($onCancel)
-                    wire:click="{{ $onCancel }}"
-                @endisset
-            >
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
+            {{ $slot }}
 
-        <p style="color: var(--text-secondary);">
-            {{ $message }}
-        </p>
+            <form method="POST" action="{{ $action }}">
+                @csrf
+                @if(strtoupper($method) !== 'POST')
+                    @method($method)
+                @endif
 
-        {{ $slot }}
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    @if($cancelUrl)
+                        <x-ui.button :href="$cancelUrl" variant="secondary">
+                            {{ $cancelText }}
+                        </x-ui.button>
+                    @endif
 
-        <div class="d-flex justify-content-end gap-2 mt-4">
-            <x-ui.button
-                type="button"
-                variant="secondary"
-                wire:click="{{ $onCancel }}"
-            >
-                {{ $cancelText }}
-            </x-ui.button>
-
-            <x-ui.button
-                type="button"
-                :variant="$variant"
-                    wire:click="{{ $onConfirm }}"
-            >
-                {{ $confirmText }}
-            </x-ui.button>
+                    <button type="submit" class="btn btn-modern btn-{{ $variant }}">
+                        {{ $confirmButton ?? $confirmText }}
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
-</div>
 @endif
-    </div>

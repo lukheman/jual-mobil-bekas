@@ -1,4 +1,5 @@
-<div class="mt-4">
+<x-layouts.guest title="AdminPro - Modern Admin Dashboard Template">
+    <div class="mt-4">
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-bg">
@@ -18,7 +19,7 @@
                     In Minutes
                 </h1>
                 <p class="hero-description">
-                    A modern, elegant admin dashboard template built with Laravel 12, Livewire, and Tailwind CSS.
+                    A modern, elegant admin dashboard template built with Laravel 12 and Bootstrap 5.
                     Features dark mode, 18+ reusable components, and user management out of the box.
                 </p>
                 <div class="hero-actions">
@@ -100,8 +101,8 @@
                     <div class="feature-icon" style="background: linear-gradient(135deg, #0ea5e9, #06b6d4);">
                         <i class="fas fa-bolt"></i>
                     </div>
-                    <h3>Livewire Powered</h3>
-                    <p>Dynamic, reactive components without writing JavaScript. Real-time updates made easy.</p>
+                    <h3>Laravel Powered</h3>
+                    <p>Built on a clean Laravel backend with controllers, routing, validation, and Blade views.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
@@ -233,7 +234,7 @@
         </div>
     </section>
 
-    <x-slot:styles>
+    @push('styles')
         <style>
             /* Hero Section */
             .hero {
@@ -868,5 +869,6 @@
                 }
             }
         </style>
-    </x-slot:styles>
+    @endpush
 </div>
+</x-layouts.guest>

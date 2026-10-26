@@ -1,4 +1,4 @@
-<div>
+<x-layouts.app title="Dashboard - AdminPro">
     {{-- Page Header --}}
     <x-layout.page-header title="Dashboard Overview" subtitle="Welcome back, John! Here's what's happening today.">
         <x-slot:actions>
@@ -132,4 +132,4 @@
             <td class="text-muted">Jan 9, 2026</td>
         </tr>
     </x-layout.table-card>
-</div>
+</x-layouts.app>

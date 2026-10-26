@@ -1,5 +1,4 @@
-<div>
-<div>
+<x-layouts.app title="Component Documentation - AdminPro">
     {{-- Page Header --}}
     <div class="docs-header mb-4">
         <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
@@ -27,22 +26,22 @@
                         <span class="input-group-text">
                             <i class="fas fa-search"></i>
                         </span>
-                        <input type="text" class="form-control" placeholder="Search components..."
-                            wire:model.live.debounce.300ms="searchQuery">
+                        <input type="text" class="form-control" id="docs-search" placeholder="Search components..."
+                            autocomplete="off">
                     </div>
                 </div>
 
                 {{-- Navigation --}}
                 <nav class="docs-nav">
                     @foreach($sections as $key => $section)
-                        <button wire:click="setSection('{{ $key }}')"
+                        <a href="{{ route('admin.components', ['section' => $key]) }}"
                             class="docs-nav-item {{ $activeSection === $key ? 'active' : '' }}">
                             <div class="d-flex align-items-center gap-2">
                                 <i class="{{ $section['icon'] }}"></i>
                                 <span>{{ $section['label'] }}</span>
                             </div>
                             <span class="docs-nav-count">{{ $section['count'] }}</span>
-                        </button>
+                        </a>
                     @endforeach
                 </nav>
 
@@ -64,61 +63,60 @@
         <div class="col-lg-9">
             {{-- Buttons Section --}}
             @if($activeSection === 'buttons')
-                @include('livewire.admin.partials.docs-buttons')
+                @include('admin.partials.docs-buttons')
             @endif
 
             {{-- Badges Section --}}
             @if($activeSection === 'badges')
-                @include('livewire.admin.partials.docs-badges')
+                @include('admin.partials.docs-badges')
             @endif
 
             {{-- Alerts Section --}}
             @if($activeSection === 'alerts')
-                @include('livewire.admin.partials.docs-alerts')
+                @include('admin.partials.docs-alerts')
             @endif
 
             {{-- Forms Section --}}
             @if($activeSection === 'forms')
-                @include('livewire.admin.partials.docs-forms')
+                @include('admin.partials.docs-forms')
             @endif
 
             {{-- Selects Section --}}
             @if($activeSection === 'selects')
-                @include('livewire.admin.partials.docs-selects')
+                @include('admin.partials.docs-selects')
             @endif
 
             {{-- Toggles Section --}}
             @if($activeSection === 'toggles')
-                @include('livewire.admin.partials.docs-toggles')
+                @include('admin.partials.docs-toggles')
             @endif
 
             {{-- Cards Section --}}
             @if($activeSection === 'cards')
-                @include('livewire.admin.partials.docs-cards')
+                @include('admin.partials.docs-cards')
             @endif
 
             {{-- Tables Section --}}
             @if($activeSection === 'tables')
-                @include('livewire.admin.partials.docs-tables')
+                @include('admin.partials.docs-tables')
             @endif
 
             {{-- Navigation Section --}}
             @if($activeSection === 'navigation')
-                @include('livewire.admin.partials.docs-navigation')
+                @include('admin.partials.docs-navigation')
             @endif
 
             {{-- Feedback Section --}}
             @if($activeSection === 'feedback')
-                @include('livewire.admin.partials.docs-feedback')
+                @include('admin.partials.docs-feedback')
             @endif
 
             {{-- Media Section --}}
             @if($activeSection === 'media')
-                @include('livewire.admin.partials.docs-media')
+                @include('admin.partials.docs-media')
             @endif
         </div>
     </div>
-</div>
 
 <style>
     .docs-header {
@@ -176,6 +174,7 @@
         border-radius: 10px;
         color: var(--bs-secondary-color);
         font-weight: 500;
+        text-decoration: none;
         transition: all 0.2s;
         cursor: pointer;
         width: 100%;
@@ -451,5 +450,17 @@
             }, 2000);
         });
     }
+
+    const docsSearch = document.getElementById('docs-search');
+
+    if (docsSearch) {
+        docsSearch.addEventListener('input', function () {
+            const query = this.value.toLowerCase().trim();
+
+            document.querySelectorAll('.docs-nav-item').forEach((item) => {
+                item.classList.toggle('d-none', query !== '' && !item.textContent.toLowerCase().includes(query));
+            });
+        });
+    }
 </script>
-</div>
+</x-layouts.app>

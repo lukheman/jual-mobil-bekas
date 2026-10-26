@@ -19,7 +19,7 @@
     <!-- Toastify CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
-    @livewireStyles
+    @stack('styles')
     <style>
         * {
             margin: 0;
@@ -568,6 +568,7 @@
     </div>
 
     <script src="{{ asset('assets/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
         // Theme Toggle Functionality
         function initTheme() {
@@ -612,15 +613,13 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script>
-        document.addEventListener('livewire:initialized', () => {
-            Livewire.on('toast', ({ message, variant, reload }) => {
-                if (reload) {
-                    sessionStorage.setItem('reload', 'true');
-                    sessionStorage.setItem('variant', variant);
-                    sessionStorage.setItem('message', message);
-                }
-
+    @if (session('success') || session('error') || session('warning') || session('info'))
+        @php
+            $toastVariant = session('success') ? 'success' : (session('error') ? 'error' : (session('warning') ? 'warning' : 'info'));
+            $toastMessage = session('success') ?? session('error') ?? session('warning') ?? session('info');
+        @endphp
+        <script>
+            window.addEventListener('load', function () {
                 const borderColors = {
                     success: "var(--bs-success)",
                     warning: "var(--bs-warning)",
@@ -629,7 +628,7 @@
                 };
 
                 Toastify({
-                    text: message,
+                    text: @json($toastMessage),
                     duration: 4000,
                     close: false,
                     gravity: "top",
@@ -637,52 +636,16 @@
                     stopOnFocus: true,
                     style: {
                         background: "var(--bg-secondary)",
-                        border: `2px solid ${borderColors[variant] || "var(--bs-secondary)"}`,
+                        border: `2px solid ${borderColors[@json($toastVariant)] || "var(--bs-secondary)"}`,
                         color: "var(--text-primary)",
                         borderRadius: "12px",
                         boxShadow: "var(--card-shadow)"
                     },
                 }).showToast();
             });
-        });
+        </script>
+    @endif
 
-        // Setelah halaman dimuat ulang, periksa apakah ada notifikasi yang harus ditampilkan
-        window.addEventListener('load', function() {
-            if (sessionStorage.getItem('reload') === 'true') {
-                const message = sessionStorage.getItem('message');
-                const variant = sessionStorage.getItem('variant');
-
-                const borderColors = {
-                    success: "var(--bs-success)",
-                    warning: "var(--bs-warning)",
-                    error: "var(--bs-danger)",
-                    info: "var(--bs-info)"
-                };
-
-                Toastify({
-                    text: message,
-                    duration: 3000,
-                    close: false,
-                    gravity: "top",
-                    position: "right",
-                    stopOnFocus: true,
-                    style: {
-                        background: "var(--bg-secondary)",
-                        border: `2px solid ${borderColors[variant] || "var(--bs-secondary)"}`,
-                        color: "var(--text-primary)",
-                        borderRadius: "12px",
-                        boxShadow: "var(--card-shadow)"
-                    },
-                }).showToast();
-
-                // Hapus item setelah toast ditampilkan
-                sessionStorage.removeItem('reload');
-                sessionStorage.removeItem('message');
-                sessionStorage.removeItem('variant');
-            }
-        });
-    </script>
-
-    @livewireScripts
+    @stack('scripts')
 </body>
 </html>
