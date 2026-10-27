@@ -1,874 +1,97 @@
-<x-layouts.guest title="AdminPro - Modern Admin Dashboard Template">
-    <div class="mt-4">
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-bg">
-            <div class="hero-shape shape-1"></div>
-            <div class="hero-shape shape-2"></div>
-            <div class="hero-shape shape-3"></div>
-        </div>
-        <div class="container hero-container">
-            <div class="hero-content">
-                <span class="hero-badge">
-                    <i class="fas fa-sparkles"></i>
-                    New Version 2.0 is Here!
-                </span>
-                <h1 class="hero-title">
-                    Build Beautiful
-                    <span class="gradient-text">Admin Dashboards</span>
-                    In Minutes
-                </h1>
-                <p class="hero-description">
-                    A modern, elegant admin dashboard template built with Laravel 12 and Bootstrap 5.
-                    Features dark mode, 18+ reusable components, and user management out of the box.
-                </p>
-                <div class="hero-actions">
-                    <a href="{{ route('login') }}" class="btn btn-primary btn-lg">
-                        <i class="fas fa-rocket"></i>
-                        Get Started Free
-                    </a>
-                    <a href="#features" class="btn btn-outline btn-lg">
-                        <i class="fas fa-play-circle"></i>
-                        Watch Demo
-                    </a>
-                </div>
-                <div class="hero-stats">
-                    <div class="stat-item">
-                        <span class="stat-value">18+</span>
-                        <span class="stat-label">Components</span>
-                    </div>
-                    <div class="stat-divider"></div>
-                    <div class="stat-item">
-                        <span class="stat-value">Dark/Light</span>
-                        <span class="stat-label">Theme Support</span>
-                    </div>
-                    <div class="stat-divider"></div>
-                    <div class="stat-item">
-                        <span class="stat-value">100%</span>
-                        <span class="stat-label">Responsive</span>
-                    </div>
-                </div>
+@php
+    $whatsapp = $settings['whatsapp_number'] ?? '6281234567890';
+    $phone = $settings['phone_number'] ?? '081234567890';
+    $address = $settings['address'] ?? 'Jl. Ahmad Yani No. 88, Samarinda';
+    $imageFor = static function ($car): string {
+        $brand = strtolower($car->carModel?->brand?->name ?? '');
+        $model = strtolower($car->carModel?->name ?? '');
+        return match (true) {
+            str_contains($model, 'avanza') => asset('assets/images/cars/toyota-avanza.webp'),
+            str_contains($model, 'hr-v') || str_contains($model, 'hrv') => asset('assets/images/cars/honda-hrv.webp'),
+            str_contains($model, 'xpander') => asset('assets/images/cars/mitsubishi-xpander.webp'),
+            str_contains($model, 'innova') => asset('assets/images/cars/toyota-innova-zenix.webp'),
+            str_contains($model, 'brio') => asset('assets/images/cars/honda-brio.webp'),
+            str_contains($model, 'fortuner') => asset('assets/images/cars/toyota-fortuner.webp'),
+            str_contains($model, 'ertiga') => asset('assets/images/cars/suzuki-ertiga.webp'),
+            str_contains($model, 'br-v') || str_contains($model, 'brv') => asset('assets/images/cars/honda-brv.webp'),
+            default => $car->primaryPhoto?->path ? asset('storage/'.$car->primaryPhoto->path) : asset('assets/images/cars/toyota-avanza.webp'),
+        };
+    };
+    $nameFor = static fn ($car): string => trim(($car->carModel?->brand?->name ?? '').' '.($car->carModel?->name ?? '').' '.($car->variant ?? ''));
+    $whatsappUrl = static fn (?string $message = null): string => 'https://wa.me/'.$whatsapp.'?text='.rawurlencode($message ?? 'Halo RodaKita, saya ingin konsultasi mobil bekas.');
+    $formatPrice = static fn (int $price): string => 'Rp '.number_format($price / 1_000_000, 0, ',', '.').' jt';
+@endphp
+
+<x-layouts.guest title="RodaKita — Mobil Bekas Terpercaya" description="Temukan mobil bekas berkualitas dengan harga transparan dan proses mudah di RodaKita.">
+    <section class="rk-hero">
+        <div class="rk-hero-image"></div>
+        <div class="rk-hero-overlay"></div>
+        <div class="rk-container rk-hero-content">
+            <div class="rk-eyebrow"><span></span> SHOWROOM MOBIL BEKAS TERPERCAYA</div>
+            <h1>Temukan mobil yang<br><em>tepat untukmu.</em></h1>
+            <p>Mobil berkualitas, harga transparan, dan proses yang<br class="desktop-only"> dibuat sesederhana mungkin.</p>
+            <div class="rk-hero-actions">
+                <a href="#stok" class="rk-button rk-button-green">Lihat Stok Mobil <i class="fas fa-arrow-right"></i></a>
+                <a href="{{ $whatsappUrl() }}" target="_blank" class="rk-button rk-button-light"><i class="fab fa-whatsapp"></i> Konsultasi Gratis</a>
             </div>
-            <div class="hero-image">
-                <div class="dashboard-preview">
-                    <div class="preview-header">
-                        <div class="preview-dots">
-                            <span class="dot red"></span>
-                            <span class="dot yellow"></span>
-                            <span class="dot green"></span>
-                        </div>
-                    </div>
-                    <div class="preview-content">
-                        <div class="preview-sidebar">
-                            <div class="sidebar-item active"></div>
-                            <div class="sidebar-item"></div>
-                            <div class="sidebar-item"></div>
-                            <div class="sidebar-item"></div>
-                        </div>
-                        <div class="preview-main">
-                            <div class="preview-cards">
-                                <div class="preview-card card-1"></div>
-                                <div class="preview-card card-2"></div>
-                                <div class="preview-card card-3"></div>
-                            </div>
-                            <div class="preview-chart"></div>
-                        </div>
-                    </div>
-                </div>
+            <div class="rk-trust-row">
+                <div><strong>10+</strong><span>Tahun pengalaman</span></div>
+                <div><strong>500+</strong><span>Unit terjual</span></div>
+                <div><strong>4.9/5</strong><span>Rating pelanggan</span></div>
+            </div>
+        </div>
+        <a href="#stok" class="rk-scroll"><span>Scroll untuk menjelajah</span><i class="fas fa-arrow-down"></i></a>
+    </section>
+
+    <section class="rk-search-wrap" id="cari">
+        <div class="rk-container">
+            <form class="rk-search-card" action="{{ route('home') }}#stok" method="GET">
+                <div class="rk-search-title"><span class="rk-search-icon"><i class="fas fa-sliders"></i></span><div><strong>Cari mobil impianmu</strong><small>Pilih sesuai kebutuhan dan budget</small></div></div>
+                <label><span>Merek</span><select name="brand"><option value="">Semua merek</option>@foreach($brands as $brand)<option value="{{ $brand->slug }}">{{ $brand->name }}</option>@endforeach</select></label>
+                <label><span>Tipe bodi</span><select name="body_type"><option value="">Semua tipe</option>@foreach($bodyTypes as $type)<option value="{{ $type->value }}">{{ $type->label() }}</option>@endforeach</select></label>
+                <label><span>Budget maksimal</span><select name="max_price"><option value="">Semua harga</option><option value="150000000">Rp 150 juta</option><option value="250000000">Rp 250 juta</option><option value="400000000">Rp 400 juta</option></select></label>
+                <button class="rk-search-submit" type="submit"><i class="fas fa-search"></i> Cari Mobil</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="rk-section rk-featured" id="stok">
+        <div class="rk-container">
+            <div class="rk-section-head"><div><div class="rk-kicker">PILIHAN TERBAIK</div><h2>Unit <em>unggulan</em> minggu ini</h2></div><a href="#semua-stok" class="rk-text-link">Lihat semua stok <i class="fas fa-arrow-right"></i></a></div>
+            <div class="rk-car-grid rk-car-grid-featured">
+                @forelse($featuredCars as $car)
+                    <article class="rk-car-card"><a href="#kontak" class="rk-car-photo"><img src="{{ $imageFor($car) }}" alt="{{ $nameFor($car) }}" loading="lazy"><span class="rk-status">Tersedia</span><span class="rk-heart"><i class="far fa-heart"></i></span></a><div class="rk-car-body"><div class="rk-car-meta">{{ $car->year }} <i></i> {{ number_format($car->mileage / 1000, 0, ',', '.') }} rb km <i></i> {{ $car->transmission->label() }}</div><h3>{{ $nameFor($car) }}</h3><strong class="rk-price">{{ $formatPrice($car->price) }}</strong><a href="{{ $whatsappUrl('Halo RodaKita, saya tertarik dengan '.$nameFor($car).'.') }}" target="_blank" class="rk-wa-link"><i class="fab fa-whatsapp"></i> Tanya via WhatsApp</a></div></article>
+                @empty
+                    <article class="rk-empty"><i class="fas fa-car"></i><h3>Stok unggulan segera hadir</h3><p>Hubungi kami untuk mendapatkan rekomendasi unit terbaru.</p></article>
+                @endforelse
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="section features-section" id="features">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-badge">Features</span>
-                <h2 class="section-title">Everything You Need to Build Amazing Dashboards</h2>
-                <p class="section-description">
-                    Packed with features that help you build professional admin interfaces faster than ever.
-                </p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">
-                        <i class="fas fa-moon"></i>
-                    </div>
-                    <h3>Dark Mode</h3>
-                    <p>Beautiful dark theme with smooth transitions. User preference is saved automatically.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #0ea5e9, #06b6d4);">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3>Laravel Powered</h3>
-                    <p>Built on a clean Laravel backend with controllers, routing, validation, and Blade views.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
-                        <i class="fas fa-puzzle-piece"></i>
-                    </div>
-                    <h3>18+ Components</h3>
-                    <p>Reusable Blade components for cards, tables, buttons, modals, and more.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>User Management</h3>
-                    <p>Full CRUD operations with search, pagination, and form validation out of the box.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #ef4444, #f87171);">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h3>Responsive Design</h3>
-                    <p>Perfect on any device with mobile-first approach and collapsible sidebar.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Authentication Ready</h3>
-                    <p>Modern login system with form validation, remember me, and session management.</p>
-                </div>
-            </div>
+    <section class="rk-section rk-light" id="keunggulan">
+        <div class="rk-container">
+            <div class="rk-section-head"><div><div class="rk-kicker">KENAPA RODAKITA</div><h2>Beli mobil bekas<br>tanpa <em>rasa khawatir.</em></h2></div><p class="rk-head-copy">Kami percaya membeli mobil bekas harusnya terasa menyenangkan. Setiap unit kami pilih dan periksa dengan standar yang sama.</p></div>
+            <div class="rk-benefits"><div class="rk-benefit"><span>01</span><i class="fas fa-clipboard-check"></i><h3>Sudah melalui inspeksi</h3><p>Setiap mobil melewati pemeriksaan menyeluruh sebelum tampil di showroom.</p></div><div class="rk-benefit"><span>02</span><i class="fas fa-receipt"></i><h3>Harga transparan</h3><p>Tidak ada biaya tersembunyi. Harga yang kamu lihat adalah harga terbaik.</p></div><div class="rk-benefit"><span>03</span><i class="fas fa-handshake"></i><h3>Proses mudah</h3><p>Dibantu dari konsultasi, test drive, hingga mobil sampai di rumah.</p></div><div class="rk-benefit"><span>04</span><i class="fas fa-shield-alt"></i><h3>Garansi pilihan</h3><p>Rasa tenang setelah transaksi dengan opsi garansi untuk unit tertentu.</p></div></div>
         </div>
     </section>
 
-    <!-- Components Section -->
-    <section class="section components-section" id="components">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-badge">Components</span>
-                <h2 class="section-title">Beautiful, Reusable UI Components</h2>
-                <p class="section-description">
-                    All components are built with accessibility and customization in mind.
-                </p>
-            </div>
-            <div class="components-showcase">
-                <div class="component-preview-card">
-                    <h4>Buttons</h4>
-                    <div class="component-demo">
-                        <button class="demo-btn primary">Primary</button>
-                        <button class="demo-btn secondary">Secondary</button>
-                        <button class="demo-btn success">Success</button>
-                        <button class="demo-btn warning">Warning</button>
-                        <button class="demo-btn danger">Danger</button>
-                    </div>
-                </div>
-                <div class="component-preview-card">
-                    <h4>Badges</h4>
-                    <div class="component-demo">
-                        <span class="demo-badge primary"><i class="fas fa-circle"></i> Active</span>
-                        <span class="demo-badge success"><i class="fas fa-check"></i> Completed</span>
-                        <span class="demo-badge warning"><i class="fas fa-clock"></i> Pending</span>
-                        <span class="demo-badge danger"><i class="fas fa-times"></i> Cancelled</span>
-                    </div>
-                </div>
-                <div class="component-preview-card">
-                    <h4>Alerts</h4>
-                    <div class="component-demo column">
-                        <div class="demo-alert success">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Your changes have been saved successfully.</span>
-                        </div>
-                        <div class="demo-alert warning">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <span>Please review your settings before continuing.</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="component-preview-card">
-                    <h4>Progress Bars</h4>
-                    <div class="component-demo column">
-                        <div class="demo-progress">
-                            <div class="progress-label">
-                                <span>Project Progress</span>
-                                <span>75%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill"
-                                    style="width: 75%; background: linear-gradient(90deg, #6366f1, #8b5cf6);"></div>
-                            </div>
-                        </div>
-                        <div class="demo-progress">
-                            <div class="progress-label">
-                                <span>Storage Used</span>
-                                <span>45%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill"
-                                    style="width: 45%; background: linear-gradient(90deg, #0ea5e9, #06b6d4);"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <section class="rk-section rk-inventory" id="semua-stok">
+        <div class="rk-container"><div class="rk-section-head"><div><div class="rk-kicker">STOK TERBARU</div><h2>Siap dibawa <em>pulang.</em></h2></div><a href="#cari" class="rk-filter-link"><i class="fas fa-sliders"></i> Filter stok</a></div><div class="rk-car-grid rk-car-grid-inventory">
+            @forelse($latestCars as $car)
+                <article class="rk-car-card"><a href="#kontak" class="rk-car-photo"><img src="{{ $imageFor($car) }}" alt="{{ $nameFor($car) }}" loading="lazy"><span class="rk-status">Tersedia</span></a><div class="rk-car-body"><div class="rk-car-meta">{{ $car->year }} <i></i> {{ number_format($car->mileage / 1000, 0, ',', '.') }} rb km <i></i> {{ $car->transmission->label() }}</div><h3>{{ $nameFor($car) }}</h3><strong class="rk-price">{{ $formatPrice($car->price) }}</strong><a href="{{ $whatsappUrl('Halo RodaKita, saya tertarik dengan '.$nameFor($car).'.') }}" target="_blank" class="rk-wa-link"><i class="fab fa-whatsapp"></i> Tanya via WhatsApp</a></div></article>
+            @empty
+                <div class="rk-empty rk-empty-wide"><i class="fas fa-car"></i><h3>Belum ada stok aktif</h3><p>Admin bisa menambahkan unit dari panel admin.</p></div>
+            @endforelse
+        </div></div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="section cta-section">
-        <div class="container">
-            <div class="cta-card">
-                <div class="cta-content">
-                    <h2>Ready to Build Something Amazing?</h2>
-                    <p>Get started with AdminPro today and create stunning admin dashboards in minutes.</p>
-                    <div class="cta-actions">
-                        <a href="{{ route('login') }}" class="btn btn-white btn-lg">
-                            <i class="fas fa-rocket"></i>
-                            Get Started Free
-                        </a>
-                        <a href="#" class="btn btn-outline-white btn-lg">
-                            <i class="fab fa-github"></i>
-                            View on GitHub
-                        </a>
-                    </div>
-                </div>
-                <div class="cta-decoration">
-                    <div class="decoration-circle"></div>
-                    <div class="decoration-circle small"></div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <section class="rk-process" id="proses"><div class="rk-container rk-process-layout"><div><div class="rk-kicker">CARA BELI DI RODAKITA</div><h2>Semudah<br><em>mengobrol.</em></h2><p>Mulai dari cerita kebutuhanmu. Kami bantu cari, pilihkan, dan siapkan mobil yang paling cocok.</p><a href="{{ $whatsappUrl() }}" target="_blank" class="rk-button rk-button-green">Mulai Konsultasi <i class="fas fa-arrow-right"></i></a></div><div class="rk-steps"><div><b>01</b><span><strong>Ceritakan kebutuhanmu</strong><small>Budget, kebutuhan, dan preferensi. Kami dengarkan.</small></span></div><div><b>02</b><span><strong>Pilih unit yang cocok</strong><small>Kami kirimkan detail, foto, dan video unit pilihanmu.</small></span></div><div><b>03</b><span><strong>Test drive & inspeksi</strong><small>Lihat dan rasakan langsung unit pilihanmu.</small></span></div><div><b>04</b><span><strong>Mobil siap di jalan</strong><small>Urusan dokumen kami bantu sampai selesai.</small></span></div></div></div></section>
 
-    @push('styles')
-        <style>
-            /* Hero Section */
-            .hero {
-                min-height: 100vh;
-                display: flex;
-                align-items: center;
-                position: relative;
-                overflow: hidden;
-                padding-top: 80px;
-            }
-
-            .hero-bg {
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                z-index: 0;
-            }
-
-            .hero-shape {
-                position: absolute;
-                border-radius: 50%;
-                animation: float 20s ease-in-out infinite;
-            }
-
-            .shape-1 {
-                width: 600px;
-                height: 600px;
-                background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
-                top: -200px;
-                right: -200px;
-            }
-
-            .shape-2 {
-                width: 400px;
-                height: 400px;
-                background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(6, 182, 212, 0.1));
-                bottom: -100px;
-                left: -100px;
-                animation-delay: -7s;
-            }
-
-            .shape-3 {
-                width: 300px;
-                height: 300px;
-                background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(52, 211, 153, 0.1));
-                top: 50%;
-                left: 30%;
-                animation-delay: -14s;
-            }
-
-            @keyframes float {
-
-                0%,
-                100% {
-                    transform: translateY(0) rotate(0deg);
-                }
-
-                33% {
-                    transform: translateY(-30px) rotate(5deg);
-                }
-
-                66% {
-                    transform: translateY(20px) rotate(-5deg);
-                }
-            }
-
-            .hero-container {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 4rem;
-                align-items: center;
-                position: relative;
-                z-index: 1;
-            }
-
-            .hero-badge {
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
-                background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
-                color: var(--bs-primary);
-                padding: 0.5rem 1rem;
-                border-radius: 50px;
-                font-size: 0.9rem;
-                font-weight: 600;
-                margin-bottom: 1.5rem;
-                border: 1px solid rgba(99, 102, 241, 0.2);
-            }
-
-            .hero-title {
-                font-size: 3.5rem;
-                font-weight: 800;
-                line-height: 1.1;
-                margin-bottom: 1.5rem;
-            }
-
-            .gradient-text {
-                background: linear-gradient(135deg, var(--bs-primary), #8b5cf6);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-            }
-
-            .hero-description {
-                font-size: 1.25rem;
-                color: var(--text-secondary);
-                margin-bottom: 2rem;
-                line-height: 1.7;
-            }
-
-            .hero-actions {
-                display: flex;
-                gap: 1rem;
-                margin-bottom: 3rem;
-            }
-
-            .hero-stats {
-                display: flex;
-                align-items: center;
-                gap: 2rem;
-            }
-
-            .stat-item {
-                text-align: center;
-            }
-
-            .stat-value {
-                display: block;
-                font-size: 1.5rem;
-                font-weight: 700;
-                color: var(--text-primary);
-            }
-
-            .stat-label {
-                font-size: 0.9rem;
-                color: var(--text-muted);
-            }
-
-            .stat-divider {
-                width: 1px;
-                height: 40px;
-                background: var(--border-color);
-            }
-
-            /* Dashboard Preview */
-            .dashboard-preview {
-                background: var(--bg-white);
-                border-radius: 20px;
-                box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
-                overflow: hidden;
-                border: 1px solid var(--border-color);
-            }
-
-            .preview-header {
-                background: linear-gradient(135deg, #1e293b, #334155);
-                padding: 1rem 1.5rem;
-            }
-
-            .preview-dots {
-                display: flex;
-                gap: 8px;
-            }
-
-            .dot {
-                width: 12px;
-                height: 12px;
-                border-radius: 50%;
-            }
-
-            .dot.red {
-                background: #ef4444;
-            }
-
-            .dot.yellow {
-                background: #f59e0b;
-            }
-
-            .dot.green {
-                background: #10b981;
-            }
-
-            .preview-content {
-                display: flex;
-                min-height: 300px;
-            }
-
-            .preview-sidebar {
-                width: 60px;
-                background: #1e293b;
-                padding: 1rem;
-                display: flex;
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-
-            .sidebar-item {
-                height: 8px;
-                background: #334155;
-                border-radius: 4px;
-            }
-
-            .sidebar-item.active {
-                background: var(--bs-primary);
-            }
-
-            .preview-main {
-                flex: 1;
-                padding: 1.5rem;
-                background: #f8fafc;
-            }
-
-            [data-theme="dark"] .preview-main {
-                background: #0f172a;
-            }
-
-            .preview-cards {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 1rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .preview-card {
-                height: 60px;
-                border-radius: 10px;
-            }
-
-            .card-1 {
-                background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            }
-
-            .card-2 {
-                background: linear-gradient(135deg, #0ea5e9, #06b6d4);
-            }
-
-            .card-3 {
-                background: linear-gradient(135deg, #10b981, #34d399);
-            }
-
-            .preview-chart {
-                height: 120px;
-                background: var(--bg-white);
-                border-radius: 10px;
-                border: 1px solid var(--border-color);
-            }
-
-            /* Section Styles */
-            .section-header {
-                text-align: center;
-                max-width: 700px;
-                margin: 0 auto 4rem;
-            }
-
-            .section-badge {
-                display: inline-block;
-                background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
-                color: var(--bs-primary);
-                padding: 0.5rem 1.25rem;
-                border-radius: 50px;
-                font-size: 0.85rem;
-                font-weight: 600;
-                margin-bottom: 1rem;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-            }
-
-            .section-title {
-                font-size: 2.5rem;
-                font-weight: 700;
-                margin-bottom: 1rem;
-            }
-
-            .section-description {
-                font-size: 1.15rem;
-                color: var(--text-secondary);
-            }
-
-            /* Features Grid */
-            .features-section {
-                background: var(--bg-white);
-            }
-
-            .features-grid {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 2rem;
-            }
-
-            .feature-card {
-                background: var(--bg-light);
-                padding: 2rem;
-                border-radius: 16px;
-                transition: all 0.3s ease;
-                border: 1px solid var(--border-color);
-            }
-
-            .feature-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            }
-
-            .feature-icon {
-                width: 60px;
-                height: 60px;
-                border-radius: 14px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-bottom: 1.5rem;
-            }
-
-            .feature-icon i {
-                font-size: 1.5rem;
-                color: white;
-            }
-
-            .feature-card h3 {
-                font-size: 1.25rem;
-                font-weight: 600;
-                margin-bottom: 0.75rem;
-            }
-
-            .feature-card p {
-                color: var(--text-secondary);
-                font-size: 0.95rem;
-            }
-
-            /* Components Showcase */
-            .components-showcase {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 2rem;
-            }
-
-            .component-preview-card {
-                background: var(--bg-white);
-                border-radius: 16px;
-                padding: 2rem;
-                border: 1px solid var(--border-color);
-            }
-
-            .component-preview-card h4 {
-                font-size: 1rem;
-                font-weight: 600;
-                margin-bottom: 1.5rem;
-                color: var(--text-muted);
-                text-transform: uppercase;
-                letter-spacing: 1px;
-            }
-
-            .component-demo {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.75rem;
-            }
-
-            .component-demo.column {
-                flex-direction: column;
-            }
-
-            .demo-btn {
-                padding: 0.625rem 1.25rem;
-                border-radius: 8px;
-                font-weight: 500;
-                font-size: 0.9rem;
-                border: none;
-                cursor: pointer;
-                transition: all 0.3s;
-            }
-
-            .demo-btn.primary {
-                background: #6366f1;
-                color: white;
-            }
-
-            .demo-btn.secondary {
-                background: #64748b;
-                color: white;
-            }
-
-            .demo-btn.success {
-                background: #10b981;
-                color: white;
-            }
-
-            .demo-btn.warning {
-                background: #f59e0b;
-                color: white;
-            }
-
-            .demo-btn.danger {
-                background: #ef4444;
-                color: white;
-            }
-
-            .demo-badge {
-                display: inline-flex;
-                align-items: center;
-                gap: 6px;
-                padding: 0.5rem 1rem;
-                border-radius: 50px;
-                font-size: 0.8rem;
-                font-weight: 600;
-            }
-
-            .demo-badge.primary {
-                background: rgba(99, 102, 241, 0.15);
-                color: #6366f1;
-            }
-
-            .demo-badge.success {
-                background: rgba(16, 185, 129, 0.15);
-                color: #10b981;
-            }
-
-            .demo-badge.warning {
-                background: rgba(245, 158, 11, 0.15);
-                color: #f59e0b;
-            }
-
-            .demo-badge.danger {
-                background: rgba(239, 68, 68, 0.15);
-                color: #ef4444;
-            }
-
-            .demo-alert {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                padding: 1rem 1.25rem;
-                border-radius: 10px;
-                font-size: 0.9rem;
-            }
-
-            .demo-alert.success {
-                background: rgba(16, 185, 129, 0.1);
-                color: #10b981;
-            }
-
-            .demo-alert.warning {
-                background: rgba(245, 158, 11, 0.1);
-                color: #f59e0b;
-            }
-
-            .demo-progress {
-                width: 100%;
-            }
-
-            .progress-label {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 0.5rem;
-                font-size: 0.9rem;
-            }
-
-            .progress-bar {
-                height: 8px;
-                background: var(--border-color);
-                border-radius: 50px;
-                overflow: hidden;
-            }
-
-            .progress-fill {
-                height: 100%;
-                border-radius: 50px;
-            }
-
-            /* CTA Section */
-            .cta-section {
-                background: var(--bg-light);
-            }
-
-            .cta-card {
-                background: linear-gradient(135deg, #6366f1, #8b5cf6);
-                border-radius: 24px;
-                padding: 4rem;
-                position: relative;
-                overflow: hidden;
-            }
-
-            .cta-content {
-                position: relative;
-                z-index: 1;
-                text-align: center;
-                max-width: 600px;
-                margin: 0 auto;
-            }
-
-            .cta-content h2 {
-                font-size: 2.5rem;
-                font-weight: 700;
-                color: white;
-                margin-bottom: 1rem;
-            }
-
-            .cta-content p {
-                font-size: 1.15rem;
-                color: rgba(255, 255, 255, 0.8);
-                margin-bottom: 2rem;
-            }
-
-            .cta-actions {
-                display: flex;
-                justify-content: center;
-                gap: 1rem;
-            }
-
-            .btn-white {
-                background: white;
-                color: #6366f1;
-            }
-
-            .btn-white:hover {
-                background: #f8fafc;
-                transform: translateY(-2px);
-            }
-
-            .btn-outline-white {
-                background: transparent;
-                border: 2px solid rgba(255, 255, 255, 0.3);
-                color: white;
-            }
-
-            .btn-outline-white:hover {
-                background: rgba(255, 255, 255, 0.1);
-                border-color: white;
-            }
-
-            .cta-decoration {
-                position: absolute;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                width: 50%;
-            }
-
-            .decoration-circle {
-                position: absolute;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.1);
-            }
-
-            .decoration-circle:first-child {
-                width: 400px;
-                height: 400px;
-                right: -100px;
-                top: -100px;
-            }
-
-            .decoration-circle.small {
-                width: 200px;
-                height: 200px;
-                right: 50px;
-                bottom: -50px;
-            }
-
-            /* Responsive */
-            @media (max-width: 1024px) {
-                .hero-container {
-                    grid-template-columns: 1fr;
-                    text-align: center;
-                }
-
-                .hero-title {
-                    font-size: 2.75rem;
-                }
-
-                .hero-actions {
-                    justify-content: center;
-                }
-
-                .hero-stats {
-                    justify-content: center;
-                }
-
-                .hero-image {
-                    display: none;
-                }
-
-                .features-grid {
-                    grid-template-columns: repeat(2, 1fr);
-                }
-
-                .components-showcase {
-                    grid-template-columns: 1fr;
-                }
-            }
-
-            @media (max-width: 768px) {
-                .hero-title {
-                    font-size: 2.25rem;
-                }
-
-                .hero-description {
-                    font-size: 1.1rem;
-                }
-
-                .hero-actions {
-                    flex-direction: column;
-                }
-
-                .hero-stats {
-                    flex-direction: column;
-                    gap: 1.5rem;
-                }
-
-                .stat-divider {
-                    width: 40px;
-                    height: 1px;
-                }
-
-                .features-grid {
-                    grid-template-columns: 1fr;
-                }
-
-                .section-title {
-                    font-size: 2rem;
-                }
-
-                .cta-card {
-                    padding: 2.5rem 1.5rem;
-                }
-
-                .cta-content h2 {
-                    font-size: 1.75rem;
-                }
-
-                .cta-actions {
-                    flex-direction: column;
-                }
-            }
-        </style>
-    @endpush
-</div>
+    <section class="rk-cta" id="kontak"><div class="rk-container rk-cta-inner"><div><div class="rk-kicker">PUNYA PERTANYAAN?</div><h2>Mobil impianmu<br>mungkin <em>sudah menunggu.</em></h2></div><div><p>Chat kami sekarang. Konsultasi gratis, tanpa kewajiban membeli.</p><a href="{{ $whatsappUrl() }}" target="_blank" class="rk-button rk-button-white"><i class="fab fa-whatsapp"></i> Chat WhatsApp</a><a href="tel:{{ $phone }}" class="rk-phone"><i class="fas fa-phone"></i> {{ $phone }}</a></div></div></section>
 </x-layouts.guest>
+
+<style>
+    :root{--rk-ink:#17352b;--rk-green:#1d5b42;--rk-lime:#d8ed68;--rk-muted:#71817a;--rk-line:#dce6e1;--rk-paper:#f5f7f5}.rk-container{max-width:1160px;margin:auto;padding:0 28px}.rk-hero{height:760px;position:relative;background:#112c24;color:#fff;overflow:hidden}.rk-hero-image{position:absolute;inset:0;background-image:url('{{ asset('assets/images/cars/hero-showroom.webp') }}');background-size:cover;background-position:center;filter:saturate(.78)}.rk-hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,35,27,.9),rgba(14,39,31,.43) 55%,rgba(14,39,31,.08))}.rk-hero-content{position:relative;height:100%;display:flex;flex-direction:column;justify-content:center;padding-top:60px}.rk-eyebrow,.rk-kicker{font-size:11px;font-weight:700;letter-spacing:2.2px;color:var(--rk-lime)}.rk-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:25px}.rk-eyebrow span{display:block;width:28px;height:1px;background:var(--rk-lime)}.rk-hero h1{font-family:'Playfair Display',serif;font-size:72px;line-height:1.05;letter-spacing:-2px;margin:0 0 26px;font-weight:700}.rk-hero h1 em,.rk-section h2 em,.rk-process h2 em,.rk-cta h2 em{color:var(--rk-lime);font-style:italic}.rk-hero p{font-size:17px;line-height:1.7;color:rgba(255,255,255,.75);margin:0 0 32px}.rk-hero-actions{display:flex;gap:12px}.rk-button{display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:14px 21px;border-radius:3px;text-decoration:none;font-size:13px;font-weight:700;transition:.25s}.rk-button:hover{transform:translateY(-2px)}.rk-button-green{color:#17352b;background:var(--rk-lime)}.rk-button-light{color:#fff;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.08)}.rk-button-white{color:var(--rk-green);background:#fff}.rk-trust-row{display:flex;gap:40px;margin-top:70px}.rk-trust-row div{display:flex;flex-direction:column;gap:3px;border-left:1px solid rgba(255,255,255,.3);padding-left:14px}.rk-trust-row strong{font-family:'Playfair Display',serif;font-size:25px}.rk-trust-row span{font-size:11px;color:rgba(255,255,255,.6)}.rk-scroll{position:absolute;right:36px;bottom:30px;display:flex;gap:12px;align-items:center;color:rgba(255,255,255,.7);font-size:10px;letter-spacing:1px;text-decoration:none;writing-mode:vertical-rl}.rk-scroll i{color:var(--rk-lime);font-size:14px}.rk-search-wrap{position:relative;margin-top:-58px;z-index:5}.rk-search-card{background:#fff;box-shadow:0 14px 40px rgba(23,53,43,.13);padding:20px 23px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr auto;align-items:end;gap:22px}.rk-search-title{display:flex;align-items:center;gap:12px}.rk-search-title strong,.rk-search-title small{display:block}.rk-search-title strong{font-size:14px}.rk-search-title small{font-size:11px;color:var(--rk-muted);margin-top:3px}.rk-search-icon{width:40px;height:40px;display:grid;place-items:center;background:#eaf3ee;color:var(--rk-green);font-size:14px}.rk-search-card label{display:flex;flex-direction:column;gap:7px}.rk-search-card label span{font-size:10px;color:var(--rk-muted);text-transform:uppercase;letter-spacing:1px}.rk-search-card select{border:0;border-bottom:1px solid var(--rk-line);padding:4px 0 9px;background:#fff;color:var(--rk-ink);font-size:13px;outline:0}.rk-search-submit{height:42px;border:0;background:var(--rk-green);color:#fff;padding:0 18px;font-size:12px;font-weight:700;white-space:nowrap}.rk-section{padding:112px 0}.rk-featured{padding-bottom:120px}.rk-section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:35px}.rk-section h2,.rk-process h2,.rk-cta h2{font-family:'Playfair Display',serif;color:var(--rk-ink);font-size:42px;line-height:1.15;margin:10px 0 0;letter-spacing:-.8px}.rk-text-link,.rk-filter-link{color:var(--rk-green);font-size:12px;font-weight:700;text-decoration:none;padding-bottom:6px;border-bottom:1px solid var(--rk-green)}.rk-text-link i{margin-left:12px}.rk-car-grid{display:grid;gap:20px}.rk-car-grid-featured{grid-template-columns:repeat(4,1fr)}.rk-car-grid-inventory{grid-template-columns:repeat(4,1fr)}.rk-car-card{background:#fff;border:1px solid var(--rk-line);transition:.25s}.rk-car-card:hover{box-shadow:0 14px 30px rgba(23,53,43,.12);transform:translateY(-4px)}.rk-car-photo{height:195px;display:block;position:relative;overflow:hidden;background:#e6ebe8}.rk-car-photo img{width:100%;height:100%;object-fit:cover;transition:.4s}.rk-car-card:hover .rk-car-photo img{transform:scale(1.04)}.rk-status{position:absolute;top:12px;left:12px;background:var(--rk-lime);color:#17352b;font-size:10px;font-weight:700;padding:5px 9px}.rk-heart{position:absolute;right:12px;top:11px;background:#fff;color:var(--rk-green);width:28px;height:28px;display:grid;place-items:center;font-size:12px}.rk-car-body{padding:17px 18px 18px}.rk-car-meta{color:var(--rk-muted);font-size:10px}.rk-car-meta i{display:inline-block;width:3px;height:3px;background:#b5c0ba;border-radius:50%;vertical-align:middle;margin:0 5px}.rk-car-body h3{font-size:15px;margin:10px 0 13px;color:var(--rk-ink);font-weight:700;min-height:18px}.rk-price{font-size:18px;color:var(--rk-green);display:block}.rk-wa-link{display:block;border-top:1px solid var(--rk-line);margin-top:15px;padding-top:13px;color:var(--rk-green);font-size:11px;text-decoration:none;font-weight:700}.rk-wa-link i{font-size:14px;margin-right:5px}.rk-light{background:var(--rk-paper)}.rk-head-copy{max-width:350px;font-size:13px;line-height:1.7;color:var(--rk-muted);margin:0}.rk-benefits{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}.rk-benefit{border-top:1px solid #b8c9c0;padding-top:19px;position:relative}.rk-benefit span{font-size:10px;color:var(--rk-green)}.rk-benefit i{font-size:25px;color:var(--rk-green);display:block;margin:35px 0 20px}.rk-benefit h3{font-size:15px;color:var(--rk-ink);margin-bottom:10px}.rk-benefit p{font-size:12px;color:var(--rk-muted);line-height:1.65;margin:0}.rk-inventory{background:#fff}.rk-filter-link{border:0;padding:10px 13px;background:#eef4f0}.rk-process{background:var(--rk-green);color:#fff;padding:100px 0}.rk-process h2{color:#fff}.rk-process p{color:rgba(255,255,255,.65);font-size:13px;line-height:1.7;max-width:310px;margin:24px 0}.rk-process-layout{display:grid;grid-template-columns:1fr 1fr;gap:120px;align-items:center}.rk-steps{border-top:1px solid rgba(255,255,255,.22)}.rk-steps>div{display:flex;gap:22px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.22)}.rk-steps b{font-family:'Playfair Display',serif;color:var(--rk-lime);font-size:20px;font-weight:400}.rk-steps span{display:flex;flex-direction:column;gap:5px}.rk-steps strong{font-size:14px}.rk-steps small{font-size:11px;color:rgba(255,255,255,.55)}.rk-cta{background:#bad45b;padding:70px 0}.rk-cta-inner{display:flex;justify-content:space-between;align-items:center}.rk-cta h2{font-size:38px}.rk-cta .rk-kicker{color:#376348}.rk-cta p{font-size:13px;max-width:280px;color:#426342;margin:0 0 18px;line-height:1.6}.rk-phone{display:block;margin-top:15px;color:#376348;font-size:12px;text-decoration:none}.rk-phone i{margin-right:5px}.rk-empty{text-align:center;grid-column:1/-1;padding:70px 20px;background:var(--rk-paper);color:var(--rk-muted)}.rk-empty i{font-size:28px;color:var(--rk-green)}.rk-empty h3{font-size:17px;color:var(--rk-ink);margin:15px 0 5px}.rk-empty p{font-size:12px}.rk-empty-wide{min-height:220px}
+    @media(max-width:900px){.rk-hero h1{font-size:55px}.rk-search-card{grid-template-columns:repeat(2,1fr)}.rk-search-title{grid-column:1/-1}.rk-car-grid-featured,.rk-car-grid-inventory{grid-template-columns:repeat(2,1fr)}.rk-benefits{grid-template-columns:repeat(2,1fr);gap:40px 20px}.rk-process-layout{gap:50px}}
+    @media(max-width:600px){.rk-container{padding:0 18px}.desktop-only{display:none}.rk-hero{height:690px}.rk-hero-image{background-position:62% center}.rk-hero h1{font-size:42px;letter-spacing:-1px}.rk-hero p{font-size:14px}.rk-hero-actions{flex-direction:column;align-items:stretch;width:205px}.rk-trust-row{gap:14px;margin-top:48px}.rk-trust-row strong{font-size:20px}.rk-trust-row span{font-size:9px}.rk-scroll{display:none}.rk-search-wrap{margin-top:-38px}.rk-search-card{grid-template-columns:1fr;padding:18px;gap:16px}.rk-search-title{grid-column:auto}.rk-search-submit{width:100%}.rk-section{padding:75px 0}.rk-section-head{display:block}.rk-section h2,.rk-process h2{font-size:35px}.rk-text-link,.rk-filter-link{display:inline-block;margin-top:22px}.rk-car-grid-featured,.rk-car-grid-inventory{grid-template-columns:1fr 1fr;gap:10px}.rk-car-photo{height:130px}.rk-car-body{padding:12px}.rk-car-body h3{font-size:12px;margin:7px 0}.rk-price{font-size:15px}.rk-wa-link{font-size:9px}.rk-heart{display:none}.rk-car-meta{font-size:8px}.rk-car-meta i{margin:0 2px}.rk-benefits{grid-template-columns:1fr 1fr;gap:30px 14px}.rk-benefit i{margin:23px 0 14px}.rk-benefit h3{font-size:13px}.rk-benefit p{font-size:11px}.rk-process{padding:75px 0}.rk-process-layout{grid-template-columns:1fr;gap:55px}.rk-cta{padding:55px 0}.rk-cta-inner{display:block}.rk-cta h2{font-size:34px;margin-bottom:25px}.rk-button{font-size:12px;padding:13px 16px}}
+</style>

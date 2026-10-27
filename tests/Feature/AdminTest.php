@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Storage;
 test('the landing page renders with its styles', function () {
     $this->get('/')
         ->assertOk()
-        ->assertSee('Build Beautiful')
-        ->assertSee('.hero {', false);
+        ->assertSee('Temukan mobil yang')
+        ->assertSee('Cari mobil impianmu')
+        ->assertSee('RodaKita');
 });
 
 test('guests can view the login and register pages', function () {

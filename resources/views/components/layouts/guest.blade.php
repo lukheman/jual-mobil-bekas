@@ -1,6 +1,6 @@
 @props([
-    'title' => 'AdminPro - Modern Admin Dashboard',
-    'description' => 'A beautiful, modern admin dashboard template built with Laravel and Bootstrap',
+    'title' => 'RodaKita — Mobil Bekas Terpercaya',
+    'description' => 'Temukan mobil bekas berkualitas dengan harga transparan dan proses mudah di RodaKita.',
     'type' => 'guest',
 ])
 
@@ -14,13 +14,14 @@
     <title>{{ $title }}</title>
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/fontawesome-free-7.2.0-web/css/all.min.css')}}">
 
     <link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.min.css')}}">
 
-    <style>
+        <style>
+            :root { --bs-primary: #1d5b42; --primary-light: #e8f1ed; --text-primary: #17352b; --text-secondary: #6b7f76; --text-muted: #91a199; --border-color: #dbe5df; --bg-light: #f5f7f5; --bg-white: #fff; }
         :root {
             --bs-primary: #6366f1;
             --bs-primary: #4f46e5;
@@ -60,7 +61,7 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: var(--bg-light);
             color: var(--text-primary);
             line-height: 1.6;
@@ -74,7 +75,7 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.94);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-color);
             transition: all 0.3s ease;
@@ -98,13 +99,14 @@
             align-items: center;
             gap: 12px;
             text-decoration: none;
-            color: var(--bs-primary);
-            font-size: 1.5rem;
+            color: var(--text-primary);
+            font-size: 1.2rem;
             font-weight: 700;
         }
 
         .site-brand i {
-            font-size: 1.75rem;
+            font-size: 1.5rem;
+            color: var(--bs-primary);
         }
 
         .site-nav {
@@ -773,24 +775,23 @@
     {{-- Navbar (shared across all pages) --}}
     <nav class="site-navbar">
         <div class="site-navbar-container">
-            <a href="/" class="site-brand">
-                <i class="fas fa-layer-group"></i>
-                <span>AdminPro</span>
+            <a href="{{ route('home') }}" class="site-brand">
+                <i class="fas fa-car-side"></i>
+                <span>RodaKita</span>
             </a>
 
             <ul class="site-nav">
-                <li><a href="/#features" class="site-nav-link">Features</a></li>
-                <li><a href="/#components" class="site-nav-link">Components</a></li>
-                <li><a href="/#pricing" class="site-nav-link">Pricing</a></li>
-                <li><a href="/#contact" class="site-nav-link">Contact</a></li>
+                <li><a href="/#stok" class="site-nav-link">Stok Mobil</a></li>
+                <li><a href="/#keunggulan" class="site-nav-link">Kenapa Kami</a></li>
+                <li><a href="/#proses" class="site-nav-link">Cara Beli</a></li>
+                <li><a href="/#kontak" class="site-nav-link">Kontak</a></li>
             </ul>
 
             <div class="site-navbar-actions">
                 <button class="theme-toggle" onclick="toggleTheme()">
                     <i class="fas fa-moon" id="theme-icon"></i>
                 </button>
-                <a href="{{ route('login') }}" class="btn-nav btn-nav-outline">Sign In</a>
-                <a href="{{ route('register') }}" class="btn-nav btn-nav-primary">Get Started</a>
+                <a href="tel:081234567890" class="btn-nav btn-nav-outline"><i class="fas fa-phone"></i> Hubungi Kami</a>
                 <button class="mobile-menu-btn">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -819,46 +820,45 @@
             <div class="container">
                 <div class="footer-container">
                     <div class="footer-brand">
-                        <a href="/" class="site-brand">
-                            <i class="fas fa-layer-group"></i>
-                            <span>AdminPro</span>
+                         <a href="{{ route('home') }}" class="site-brand">
+                            <i class="fas fa-car-side"></i>
+                            <span>RodaKita</span>
                         </a>
-                        <p>A modern, elegant admin dashboard template built with Laravel and Bootstrap.</p>
+                         <p>Teman perjalanan Anda menemukan mobil bekas berkualitas, jujur, dan siap jalan.</p>
                     </div>
 
                     <div class="footer-links">
                         <div class="footer-column">
-                            <h4>Product</h4>
+                            <h4>Jelajahi</h4>
                             <ul>
-                                <li><a href="#features">Features</a></li>
-                                <li><a href="#components">Components</a></li>
-                                <li><a href="#pricing">Pricing</a></li>
-                                <li><a href="#">Changelog</a></li>
+                                 <li><a href="#stok">Stok Mobil</a></li>
+                                 <li><a href="#keunggulan">Keunggulan</a></li>
+                                 <li><a href="#proses">Cara Beli</a></li>
+                                 <li><a href="#kontak">Kontak</a></li>
                             </ul>
                         </div>
                         <div class="footer-column">
-                            <h4>Resources</h4>
+                            <h4>Layanan</h4>
                             <ul>
-                                <li><a href="#">Documentation</a></li>
-                                <li><a href="#">Tutorials</a></li>
-                                <li><a href="#">Blog</a></li>
-                                <li><a href="#">Support</a></li>
+                                 <li><a href="#">Inspeksi unit</a></li>
+                                 <li><a href="#">Test drive</a></li>
+                                 <li><a href="#">Tukar tambah</a></li>
+                                 <li><a href="#">Bantuan</a></li>
                             </ul>
                         </div>
                         <div class="footer-column">
-                            <h4>Company</h4>
+                            <h4>Legal</h4>
                             <ul>
-                                <li><a href="#">About</a></li>
-                                <li><a href="#">Careers</a></li>
-                                <li><a href="#">Privacy</a></li>
-                                <li><a href="#">Terms</a></li>
+                                 <li><a href="#">Tentang Kami</a></li>
+                                 <li><a href="#">Kebijakan Privasi</a></li>
+                                 <li><a href="#">Syarat & Ketentuan</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
                 <div class="footer-bottom">
-                    <p>&copy; {{ date('Y') }} AdminPro. All rights reserved.</p>
+                    <p>&copy; {{ date('Y') }} RodaKita. Semua hak dilindungi.</p>
                     <div class="footer-social">
                         <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-github"></i></a>
