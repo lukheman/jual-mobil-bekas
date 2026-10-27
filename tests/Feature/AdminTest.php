@@ -10,7 +10,7 @@ test('the landing page renders with its styles', function () {
         ->assertOk()
         ->assertSee('Temukan mobil yang')
         ->assertSee('Cari mobil impianmu')
-        ->assertSee('RodaKita');
+        ->assertSee('RodaTa');
 });
 
 test('guests can view the login and register pages', function () {

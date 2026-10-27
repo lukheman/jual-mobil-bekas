@@ -1,6 +1,6 @@
 @props([
-    'title' => 'RodaKita — Mobil Bekas Terpercaya',
-    'description' => 'Temukan mobil bekas berkualitas dengan harga transparan dan proses mudah di RodaKita.',
+    'title' => 'RodaTa — Mobil Bekas Terpercaya',
+    'description' => 'Temukan mobil bekas berkualitas dengan harga transparan dan proses mudah di RodaTa.',
     'type' => 'guest',
 ])
 
@@ -777,7 +777,7 @@
         <div class="site-navbar-container">
             <a href="{{ route('home') }}" class="site-brand">
                 <i class="fas fa-car-side"></i>
-                <span>RodaKita</span>
+                <span>RodaTa</span>
             </a>
 
             <ul class="site-nav">
@@ -822,7 +822,7 @@
                     <div class="footer-brand">
                          <a href="{{ route('home') }}" class="site-brand">
                             <i class="fas fa-car-side"></i>
-                            <span>RodaKita</span>
+                            <span>RodaTa</span>
                         </a>
                          <p>Teman perjalanan Anda menemukan mobil bekas berkualitas, jujur, dan siap jalan.</p>
                     </div>
@@ -858,7 +858,7 @@
                 </div>
 
                 <div class="footer-bottom">
-                    <p>&copy; {{ date('Y') }} RodaKita. Semua hak dilindungi.</p>
+                    <p>&copy; {{ date('Y') }} RodaTa. Semua hak dilindungi.</p>
                     <div class="footer-social">
                         <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-github"></i></a>

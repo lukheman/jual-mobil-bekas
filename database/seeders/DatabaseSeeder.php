@@ -68,7 +68,7 @@ class DatabaseSeeder extends Seeder
                 'tax_expiry' => now()->addMonths(8),
                 'document_completeness' => 'Lengkap',
                 'condition' => 'Terawat, siap pakai, dan sudah melalui inspeksi showroom.',
-                'description' => 'Unit pilihan RodaKita dengan riwayat perawatan yang jelas.',
+                'description' => 'Unit pilihan RodaTa dengan riwayat perawatan yang jelas.',
                 'city' => 'Samarinda',
                 'status' => CarStatus::Available,
                 'is_featured' => in_array($modelName, ['Avanza', 'HR-V', 'Xpander', 'Innova Zenix'], true),
