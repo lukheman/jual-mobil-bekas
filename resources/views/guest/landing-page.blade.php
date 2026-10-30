@@ -18,11 +18,11 @@
         };
     };
     $nameFor = static fn ($car): string => trim(($car->carModel?->brand?->name ?? '').' '.($car->carModel?->name ?? '').' '.($car->variant ?? ''));
-    $whatsappUrl = static fn (?string $message = null): string => 'https://wa.me/'.$whatsapp.'?text='.rawurlencode($message ?? 'Halo RodaTa, saya ingin konsultasi mobil bekas.');
+    $whatsappUrl = static fn (?string $message = null): string => 'https://wa.me/'.$whatsapp.'?text='.rawurlencode($message ?? 'Halo MobilTa, saya ingin konsultasi mobil bekas.');
     $formatPrice = static fn (int $price): string => 'Rp '.number_format($price / 1_000_000, 0, ',', '.').' jt';
 @endphp
 
-<x-layouts.guest title="RodaTa — Mobil Bekas Terpercaya" description="Temukan mobil bekas berkualitas dengan harga transparan dan proses mudah di RodaTa.">
+<x-layouts.guest title="MobilTa — Mobil Bekas Terpercaya" description="Temukan mobil bekas berkualitas dengan harga transparan dan proses mudah di MobilTa.">
     <section class="rk-hero">
         <div class="rk-hero-image"></div>
         <div class="rk-hero-overlay"></div>
@@ -60,7 +60,7 @@
             <div class="rk-section-head"><div><div class="rk-kicker">PILIHAN TERBAIK</div><h2>Unit <em>unggulan</em> minggu ini</h2></div><a href="#semua-stok" class="rk-text-link">Lihat semua stok <i class="fas fa-arrow-right"></i></a></div>
             <div class="rk-car-grid rk-car-grid-featured">
                 @forelse($featuredCars as $car)
-                    <article class="rk-car-card"><a href="#kontak" class="rk-car-photo"><img src="{{ $imageFor($car) }}" alt="{{ $nameFor($car) }}" loading="lazy"><span class="rk-status">Tersedia</span><span class="rk-heart"><i class="far fa-heart"></i></span></a><div class="rk-car-body"><div class="rk-car-meta">{{ $car->year }} <i></i> {{ number_format($car->mileage / 1000, 0, ',', '.') }} rb km <i></i> {{ $car->transmission->label() }}</div><h3>{{ $nameFor($car) }}</h3><strong class="rk-price">{{ $formatPrice($car->price) }}</strong><a href="{{ $whatsappUrl('Halo RodaTa, saya tertarik dengan '.$nameFor($car).'.') }}" target="_blank" class="rk-wa-link"><i class="fab fa-whatsapp"></i> Tanya via WhatsApp</a></div></article>
+                    <article class="rk-car-card"><a href="{{ route('cars.show', $car) }}" class="rk-car-photo"><img src="{{ $imageFor($car) }}" alt="{{ $nameFor($car) }}" loading="lazy"><span class="rk-status">Tersedia</span><span class="rk-heart"><i class="far fa-heart"></i></span></a><div class="rk-car-body"><div class="rk-car-meta">{{ $car->year }} <i></i> {{ number_format($car->mileage / 1000, 0, ',', '.') }} rb km <i></i> {{ $car->transmission->label() }}</div><h3>{{ $nameFor($car) }}</h3><strong class="rk-price">{{ $formatPrice($car->price) }}</strong><a href="{{ $whatsappUrl('Halo MobilTa, saya tertarik dengan '.$nameFor($car).'.') }}" target="_blank" class="rk-wa-link"><i class="fab fa-whatsapp"></i> Tanya via WhatsApp</a></div></article>
                 @empty
                     <article class="rk-empty"><i class="fas fa-car"></i><h3>Stok unggulan segera hadir</h3><p>Hubungi kami untuk mendapatkan rekomendasi unit terbaru.</p></article>
                 @endforelse
@@ -70,7 +70,7 @@
 
     <section class="rk-section rk-light" id="keunggulan">
         <div class="rk-container">
-            <div class="rk-section-head"><div><div class="rk-kicker">KENAPA RodaTa</div><h2>Beli mobil bekas<br>tanpa <em>rasa khawatir.</em></h2></div><p class="rk-head-copy">Kami percaya membeli mobil bekas harusnya terasa menyenangkan. Setiap unit kami pilih dan periksa dengan standar yang sama.</p></div>
+            <div class="rk-section-head"><div><div class="rk-kicker">KENAPA MobilTa</div><h2>Beli mobil bekas<br>tanpa <em>rasa khawatir.</em></h2></div><p class="rk-head-copy">Kami percaya membeli mobil bekas harusnya terasa menyenangkan. Setiap unit kami pilih dan periksa dengan standar yang sama.</p></div>
             <div class="rk-benefits"><div class="rk-benefit"><span>01</span><i class="fas fa-clipboard-check"></i><h3>Sudah melalui inspeksi</h3><p>Setiap mobil melewati pemeriksaan menyeluruh sebelum tampil di showroom.</p></div><div class="rk-benefit"><span>02</span><i class="fas fa-receipt"></i><h3>Harga transparan</h3><p>Tidak ada biaya tersembunyi. Harga yang kamu lihat adalah harga terbaik.</p></div><div class="rk-benefit"><span>03</span><i class="fas fa-handshake"></i><h3>Proses mudah</h3><p>Dibantu dari konsultasi, test drive, hingga mobil sampai di rumah.</p></div><div class="rk-benefit"><span>04</span><i class="fas fa-shield-alt"></i><h3>Garansi pilihan</h3><p>Rasa tenang setelah transaksi dengan opsi garansi untuk unit tertentu.</p></div></div>
         </div>
     </section>
@@ -78,14 +78,14 @@
     <section class="rk-section rk-inventory" id="semua-stok">
         <div class="rk-container"><div class="rk-section-head"><div><div class="rk-kicker">STOK TERBARU</div><h2>Siap dibawa <em>pulang.</em></h2></div><a href="#cari" class="rk-filter-link"><i class="fas fa-sliders"></i> Filter stok</a></div><div class="rk-car-grid rk-car-grid-inventory">
             @forelse($latestCars as $car)
-                <article class="rk-car-card"><a href="#kontak" class="rk-car-photo"><img src="{{ $imageFor($car) }}" alt="{{ $nameFor($car) }}" loading="lazy"><span class="rk-status">Tersedia</span></a><div class="rk-car-body"><div class="rk-car-meta">{{ $car->year }} <i></i> {{ number_format($car->mileage / 1000, 0, ',', '.') }} rb km <i></i> {{ $car->transmission->label() }}</div><h3>{{ $nameFor($car) }}</h3><strong class="rk-price">{{ $formatPrice($car->price) }}</strong><a href="{{ $whatsappUrl('Halo RodaTa, saya tertarik dengan '.$nameFor($car).'.') }}" target="_blank" class="rk-wa-link"><i class="fab fa-whatsapp"></i> Tanya via WhatsApp</a></div></article>
+                <article class="rk-car-card"><a href="{{ route('cars.show', $car) }}" class="rk-car-photo"><img src="{{ $imageFor($car) }}" alt="{{ $nameFor($car) }}" loading="lazy"><span class="rk-status">Tersedia</span></a><div class="rk-car-body"><div class="rk-car-meta">{{ $car->year }} <i></i> {{ number_format($car->mileage / 1000, 0, ',', '.') }} rb km <i></i> {{ $car->transmission->label() }}</div><h3>{{ $nameFor($car) }}</h3><strong class="rk-price">{{ $formatPrice($car->price) }}</strong><a href="{{ $whatsappUrl('Halo MobilTa, saya tertarik dengan '.$nameFor($car).'.') }}" target="_blank" class="rk-wa-link"><i class="fab fa-whatsapp"></i> Tanya via WhatsApp</a></div></article>
             @empty
                 <div class="rk-empty rk-empty-wide"><i class="fas fa-car"></i><h3>Belum ada stok aktif</h3><p>Admin bisa menambahkan unit dari panel admin.</p></div>
             @endforelse
         </div></div>
     </section>
 
-    <section class="rk-process" id="proses"><div class="rk-container rk-process-layout"><div><div class="rk-kicker">CARA BELI DI RodaTa</div><h2>Semudah<br><em>mengobrol.</em></h2><p>Mulai dari cerita kebutuhanmu. Kami bantu cari, pilihkan, dan siapkan mobil yang paling cocok.</p><a href="{{ $whatsappUrl() }}" target="_blank" class="rk-button rk-button-green">Mulai Konsultasi <i class="fas fa-arrow-right"></i></a></div><div class="rk-steps"><div><b>01</b><span><strong>Ceritakan kebutuhanmu</strong><small>Budget, kebutuhan, dan preferensi. Kami dengarkan.</small></span></div><div><b>02</b><span><strong>Pilih unit yang cocok</strong><small>Kami kirimkan detail, foto, dan video unit pilihanmu.</small></span></div><div><b>03</b><span><strong>Test drive & inspeksi</strong><small>Lihat dan rasakan langsung unit pilihanmu.</small></span></div><div><b>04</b><span><strong>Mobil siap di jalan</strong><small>Urusan dokumen kami bantu sampai selesai.</small></span></div></div></div></section>
+    <section class="rk-process" id="proses"><div class="rk-container rk-process-layout"><div><div class="rk-kicker">CARA BELI DI MobilTa</div><h2>Semudah<br><em>mengobrol.</em></h2><p>Mulai dari cerita kebutuhanmu. Kami bantu cari, pilihkan, dan siapkan mobil yang paling cocok.</p><a href="{{ $whatsappUrl() }}" target="_blank" class="rk-button rk-button-green">Mulai Konsultasi <i class="fas fa-arrow-right"></i></a></div><div class="rk-steps"><div><b>01</b><span><strong>Ceritakan kebutuhanmu</strong><small>Budget, kebutuhan, dan preferensi. Kami dengarkan.</small></span></div><div><b>02</b><span><strong>Pilih unit yang cocok</strong><small>Kami kirimkan detail, foto, dan video unit pilihanmu.</small></span></div><div><b>03</b><span><strong>Test drive & inspeksi</strong><small>Lihat dan rasakan langsung unit pilihanmu.</small></span></div><div><b>04</b><span><strong>Mobil siap di jalan</strong><small>Urusan dokumen kami bantu sampai selesai.</small></span></div></div></div></section>
 
     <section class="rk-cta" id="kontak"><div class="rk-container rk-cta-inner"><div><div class="rk-kicker">PUNYA PERTANYAAN?</div><h2>Mobil impianmu<br>mungkin <em>sudah menunggu.</em></h2></div><div><p>Chat kami sekarang. Konsultasi gratis, tanpa kewajiban membeli.</p><a href="{{ $whatsappUrl() }}" target="_blank" class="rk-button rk-button-white"><i class="fab fa-whatsapp"></i> Chat WhatsApp</a><a href="tel:{{ $phone }}" class="rk-phone"><i class="fas fa-phone"></i> {{ $phone }}</a></div></div></section>
 </x-layouts.guest>

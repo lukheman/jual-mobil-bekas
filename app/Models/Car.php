@@ -103,6 +103,14 @@ class Car extends Model
         return $this->hasMany(ClickLog::class);
     }
 
+    /**
+     * Get the primary photo URL, if available.
+     */
+    public function imageUrl(): ?string
+    {
+        return $this->primaryPhoto?->url();
+    }
+
     public function scopeAvailable(Builder $query): void
     {
         $query->where('status', CarStatus::Available);

@@ -26,7 +26,7 @@
         <button class="btn btn-link mobile-toggle me-3" onclick="toggleSidebar()">
             <i class="fas fa-bars"></i>
         </button>
-        <div class="input-group" style="max-width: 400px;">
+        <div class="input-group topbar-search" style="max-width: 400px;">
             <span class="input-group-text" style="background: var(--input-bg); border-color: var(--border-color);">
                 <i class="fas fa-search" style="color: var(--text-muted);"></i>
             </span>

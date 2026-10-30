@@ -1,13 +1,13 @@
-<x-layouts.guest title="Login - AdminPro" type="auth">
+<x-layouts.guest title="Login - RodaTa" description="Masuk ke panel admin RodaTa" type="auth">
     <div class="login-container">
         <div class="login-card">
             <!-- Brand Logo -->
             <div class="brand-logo">
                 <div class="icon-wrapper">
-                    <i class="fas fa-layer-group"></i>
+                    <i class="fas fa-car-side"></i>
                 </div>
-                <h1>Welcome Back</h1>
-                <p>Sign in to continue to AdminPro</p>
+                <h1>Selamat datang kembali</h1>
+                <p>Masuk ke panel admin RodaTa</p>
             </div>
 
             <!-- Login Form -->
@@ -19,8 +19,8 @@
                     <i class="fas fa-envelope input-icon"></i>
                     <input type="email" name="email" value="{{ old('email') }}"
                         class="form-control @error('email') is-invalid @enderror" id="email"
-                        placeholder="Email Address" autocomplete="email" required autofocus>
-                    <label for="email">Email Address</label>
+                        placeholder="Email" autocomplete="email" required autofocus>
+                    <label for="email">Email</label>
                     @error('email')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -31,8 +31,8 @@
                     <i class="fas fa-lock input-icon"></i>
                     <input type="password" name="password"
                         class="form-control @error('password') is-invalid @enderror" id="password"
-                        placeholder="Password" autocomplete="current-password" required>
-                    <label for="password">Password</label>
+                        placeholder="Kata sandi" autocomplete="current-password" required>
+                    <label for="password">Kata sandi</label>
                     <button type="button" class="password-toggle" onclick="togglePassword()">
                         <i class="fas fa-eye" id="toggleIcon"></i>
                     </button>
@@ -46,28 +46,28 @@
                     <div class="form-check mb-0">
                         <input class="form-check-input" type="checkbox" name="remember" value="1"
                             id="remember" @checked(old('remember'))>
-                        <label class="form-check-label" for="remember">Remember me</label>
-                    </div>
-                    <a href="#" class="forgot-password">Forgot Password?</a>
+                    <label class="form-check-label" for="remember">Ingat saya</label>
+                </div>
+                    <a href="#" class="forgot-password">Lupa kata sandi?</a>
                 </div>
 
                 <!-- Login Button -->
                 <button type="submit" class="btn btn-login" id="login-button">
-                    <span id="login-text">Sign In <i class="fas fa-arrow-right"></i></span>
+                    <span id="login-text">Masuk <i class="fas fa-arrow-right"></i></span>
                     <span id="login-loading" class="d-none">
-                        <i class="fas fa-spinner fa-spin me-2"></i> Signing in...
+                        <i class="fas fa-spinner fa-spin me-2"></i> Memproses...
                     </span>
                 </button>
             </form>
 
             <!-- Divider -->
             <div class="divider">
-                <span>or continue with</span>
+                <span>akses khusus admin</span>
             </div>
 
             <!-- Sign Up Link -->
             <div class="signup-link">
-                Don't have an account? <a href="{{ route('register') }}">Create Account</a>
+                Belum punya akun? <a href="{{ route('register') }}">Buat akun</a>
             </div>
         </div>
     </div>

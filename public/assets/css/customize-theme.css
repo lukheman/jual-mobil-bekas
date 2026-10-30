@@ -2,45 +2,45 @@
     --sidebar-width: 280px;
     --topbar-height: 70px;
 
-    /* Bootstrap overrides — palet alam */
-    --bs-primary: #4a6741;
-    --bs-primary-rgb: 74, 103, 65;
-    --bs-secondary: #8a6e3a;
-    --bs-secondary-rgb: 138, 110, 58;
-    --bs-success: #5a8a3a;
-    --bs-success-rgb: 90, 138, 58;
-    --bs-warning: #c8a050;
-    --bs-warning-rgb: 200, 160, 80;
-    --bs-danger: #c05a3a;
-    --bs-danger-rgb: 192, 90, 58;
-    --bs-info: #4a7a8a;
-    --bs-info-rgb: 74, 122, 138;
+    /* MobilTa palette — forest green, lime, warm paper */
+    --bs-primary: #1d5b42;
+    --bs-primary-rgb: 29, 91, 66;
+    --bs-secondary: #71817a;
+    --bs-secondary-rgb: 113, 129, 122;
+    --bs-success: #4d8a63;
+    --bs-success-rgb: 77, 138, 99;
+    --bs-warning: #bd8a38;
+    --bs-warning-rgb: 189, 138, 56;
+    --bs-danger: #b9584c;
+    --bs-danger-rgb: 185, 88, 76;
+    --bs-info: #4f8290;
+    --bs-info-rgb: 79, 130, 144;
 
     /* Light theme — pasir & daun kering */
-    --bg-primary: #f5f0e8;
-    --bg-secondary: #ede8d8;
-    --bg-tertiary: #f9f6ee;
-    --text-primary: #2d2a1e;
-    --text-secondary: #7a6e52;
-    --text-muted: #a09070;
-    --border-color: #c8b99a;
-    --border-light: #ddd4bc;
-    --input-bg: #f9f6ee;
-    --hover-bg: #ede8d8;
-    --card-shadow: 0 1px 3px rgba(74, 60, 30, 0.10), 0 1px 2px rgba(74, 60, 30, 0.14);
+    --bg-primary: #f5f7f5;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #edf3ef;
+    --text-primary: #17352b;
+    --text-secondary: #71817a;
+    --text-muted: #91a199;
+    --border-color: #dce6e1;
+    --border-light: #e5ece8;
+    --input-bg: #f7faf8;
+    --hover-bg: #eaf3ee;
+    --card-shadow: 0 8px 24px rgba(23, 53, 43, 0.08);
 }
 
 [data-theme="dark"] {
     /* Dark theme — hutan malam & tanah gelap */
-    --bg-primary: #1a1f14;
-    --bg-secondary: #252d1e;
-    --bg-tertiary: #2e3828;
-    --text-primary: #e8f0d8;
-    --text-secondary: #b0c49a;
-    --text-muted: #7a9060;
-    --border-color: #3a4830;
-    --border-light: #4a5a3a;
-    --input-bg: #252d1e;
-    --hover-bg: #2e3828;
-    --card-shadow: 0 1px 3px rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.45);
+    --bg-primary: #10251e;
+    --bg-secondary: #17352b;
+    --bg-tertiary: #214638;
+    --text-primary: #f2f7e9;
+    --text-secondary: #b8cbbf;
+    --text-muted: #8ca397;
+    --border-color: #315745;
+    --border-light: #3c6652;
+    --input-bg: #214638;
+    --hover-bg: #2b5543;
+    --card-shadow: 0 8px 24px rgba(0,0,0,.22);
 }

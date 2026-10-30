@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Facades\Storage;
 
 class Brand extends Model
 {
@@ -36,5 +37,21 @@ class Brand extends Model
     public function slugSource(): string
     {
         return $this->name;
+    }
+
+    /**
+     * Resolve the public URL for the brand logo.
+     */
+    public function logoUrl(): ?string
+    {
+        if (blank($this->logo)) {
+            return null;
+        }
+
+        $disk = Storage::disk('public');
+
+        return $disk->exists($this->logo)
+            ? $disk->url($this->logo)
+            : asset('assets/images/'.$this->logo);
     }
 }

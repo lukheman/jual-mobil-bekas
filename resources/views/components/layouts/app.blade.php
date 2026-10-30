@@ -1,7 +1,7 @@
 @props([
-    'title' => 'Modern Admin Dashboard',
-    'brandName' => 'AdminPro',
-    'brandIcon' => 'fas fa-layer-group'
+    'title' => 'RodaTa Admin',
+    'brandName' => 'RodaTa',
+    'brandIcon' => 'fas fa-car-side'
 ])
 
 <!DOCTYPE html>
@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="{{ asset('assets/fontawesome-free-7.2.0-web/css/all.min.css')}}">
 
     <link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.min.css')}}">
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('assets/css/customize-theme.css')}}">
     <!-- Toastify CSS -->
@@ -28,7 +30,7 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             transition: background-color 0.3s ease, color 0.3s ease;
@@ -56,6 +58,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            letter-spacing: -.3px;
         }
 
         .sidebar-brand i {
@@ -95,6 +98,7 @@
         .sidebar-menu a.active {
             background: var(--bs-primary);
             color: white;
+            box-shadow: 0 7px 16px rgba(29, 91, 66, .22);
         }
 
         .sidebar-menu a i {
@@ -111,7 +115,7 @@
         .topbar {
             background: var(--bg-secondary);
             height: var(--topbar-height);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 0 var(--border-color);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -143,7 +147,7 @@
 
         .modern-card {
             background: var(--bg-secondary);
-            border-radius: 16px;
+            border-radius: 4px;
             padding: 1.75rem;
             box-shadow: var(--card-shadow);
             transition: all 0.3s ease;
@@ -161,7 +165,7 @@
 
         .stat-card {
             background: var(--bg-secondary);
-            border-radius: 16px;
+            border-radius: 4px;
             padding: 1.75rem;
             box-shadow: var(--card-shadow);
             transition: all 0.3s;
@@ -246,7 +250,7 @@
         }
 
         .btn-primary-modern:hover {
-            background: var(--bs-primary);
+            background: #164934;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
         }
@@ -281,6 +285,14 @@
 
             .main-content {
                 margin-left: 0;
+            }
+
+            .topbar {
+                padding: 0 1rem;
+            }
+
+            .topbar-search {
+                display: none;
             }
 
             .mobile-toggle {
@@ -452,7 +464,7 @@
             background: var(--input-bg);
             border: 1px solid var(--border-color);
             color: var(--text-primary);
-            border-radius: 8px;
+            border-radius: 3px;
             padding: 0.75rem 1rem;
         }
 
@@ -536,14 +548,27 @@
 <body>
     <!-- Sidebar -->
     <x-layout.sidebar :brand-name="$brandName" :brand-icon="$brandIcon">
-        <x-layout.sidebar-section title="Main">
+        <x-layout.sidebar-section title="Utama">
             <x-layout.sidebar-link href="{{ route('dashboard') }}" icon="fas fa-home" :active="request()->routeIs('dashboard')">Dashboard</x-layout.sidebar-link>
-            <x-layout.sidebar-link href="{{ route('admin.users') }}" icon="fas fa-users" :active="request()->routeIs('admin.users')">Users</x-layout.sidebar-link>
+            <x-layout.sidebar-link href="{{ route('admin.cars') }}" icon="fas fa-car-side" :active="request()->routeIs('admin.cars*')">Mobil</x-layout.sidebar-link>
+            <x-layout.sidebar-link href="{{ route('admin.leads') }}" icon="fas fa-inbox" :active="request()->routeIs('admin.leads*')">Lead</x-layout.sidebar-link>
         </x-layout.sidebar-section>
 
-        <x-layout.sidebar-section title="Account">
+        <x-layout.sidebar-section title="Data Master">
+            <x-layout.sidebar-link href="{{ route('admin.brands') }}" icon="fas fa-trademark" :active="request()->routeIs('admin.brands*')">Merek</x-layout.sidebar-link>
+            <x-layout.sidebar-link href="{{ route('admin.car-models') }}" icon="fas fa-list" :active="request()->routeIs('admin.car-models*')">Model Mobil</x-layout.sidebar-link>
+            <x-layout.sidebar-link href="{{ route('admin.features') }}" icon="fas fa-sliders" :active="request()->routeIs('admin.features*')">Fitur</x-layout.sidebar-link>
+        </x-layout.sidebar-section>
+
+        <x-layout.sidebar-section title="Konten">
+            <x-layout.sidebar-link href="{{ route('admin.pages') }}" icon="fas fa-file-lines" :active="request()->routeIs('admin.pages*')">Halaman</x-layout.sidebar-link>
+            <x-layout.sidebar-link href="{{ route('admin.faqs') }}" icon="fas fa-circle-question" :active="request()->routeIs('admin.faqs*')">FAQ</x-layout.sidebar-link>
+            <x-layout.sidebar-link href="{{ route('admin.settings') }}" icon="fas fa-cog" :active="request()->routeIs('admin.settings*')">Pengaturan Situs</x-layout.sidebar-link>
+        </x-layout.sidebar-section>
+
+        <x-layout.sidebar-section title="Akun">
+            <x-layout.sidebar-link href="{{ route('admin.users') }}" icon="fas fa-users" :active="request()->routeIs('admin.users')">Users</x-layout.sidebar-link>
             <x-layout.sidebar-link href="{{ route('admin.profile') }}" icon="fas fa-user-circle" :active="request()->routeIs('admin.profile')">Profile</x-layout.sidebar-link>
-            <x-layout.sidebar-link href="#settings" icon="fas fa-cog">Settings</x-layout.sidebar-link>
         </x-layout.sidebar-section>
 
         <x-layout.sidebar-section title="Developer">

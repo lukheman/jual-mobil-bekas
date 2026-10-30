@@ -19,7 +19,7 @@
 
 <div {{ $attributes->only('class')->merge(['class' => 'mb-3']) }}>
     @if($label)
-        <label for="{{ $inputId }}" class="form-label" style="color: #1e293b; font-weight: 500;">
+        <label for="{{ $inputId }}" class="form-label" style="color: var(--text-primary); font-weight: 500;">
             {{ $label }}
             @if($required)
                 <span style="color: var(--bs-danger);">*</span>
@@ -40,7 +40,7 @@
                 id="{{ $inputId }}"
                 class="form-control {{ $iconPosition === 'left' ? 'border-start-0' : 'border-end-0' }} {{ $error ? 'is-invalid' : '' }}"
                 @if($placeholder) placeholder="{{ $placeholder }}" @endif
-                @if($value) value="{{ $value }}" @endif
+                @if(! is_null($value)) value="{{ $value }}" @endif
                 @if($required) required @endif
                 @if($disabled) disabled @endif
                 {{ $attributes->except('class') }}
@@ -58,7 +58,7 @@
             id="{{ $inputId }}"
             class="form-control {{ $error ? 'is-invalid' : '' }}"
             @if($placeholder) placeholder="{{ $placeholder }}" @endif
-            @if($value) value="{{ $value }}" @endif
+            @if(! is_null($value)) value="{{ $value }}" @endif
             @if($required) required @endif
             @if($disabled) disabled @endif
             {{ $attributes->except('class') }}

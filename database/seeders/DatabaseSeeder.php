@@ -35,6 +35,8 @@ class DatabaseSeeder extends Seeder
         );
 
         if (Car::query()->exists()) {
+            $this->addDummyGalleryPhotos();
+
             return;
         }
 
@@ -73,7 +75,14 @@ class DatabaseSeeder extends Seeder
                 'status' => CarStatus::Available,
                 'is_featured' => in_array($modelName, ['Avanza', 'HR-V', 'Xpander', 'Innova Zenix'], true),
             ]);
-            CarPhoto::create(['car_id' => $car->id, 'path' => 'cars/'.$image.'.webp', 'sort_order' => 0, 'is_primary' => true]);
+            foreach (['cars/'.$image.'.webp', 'cars/inspection.webp', 'cars/hero-showroom.webp'] as $sortOrder => $path) {
+                CarPhoto::create([
+                    'car_id' => $car->id,
+                    'path' => $path,
+                    'sort_order' => $sortOrder,
+                    'is_primary' => $sortOrder === 0,
+                ]);
+            }
         }
 
         foreach (['Bebas banjir', 'Bebas tabrak', 'Surat lengkap', 'Siap test drive'] as $feature) {
@@ -94,6 +103,38 @@ class DatabaseSeeder extends Seeder
             'address' => 'Jl. Ahmad Yani No. 88, Samarinda',
         ] as $key => $value) {
             Setting::firstOrCreate(['key' => $key], ['value' => $value]);
+        }
+    }
+
+    /**
+     * Add gallery placeholders to existing demo cars without touching uploaded photos.
+     */
+    private function addDummyGalleryPhotos(): void
+    {
+        foreach (Car::query()->with('photos')->get() as $car) {
+            if ($car->photos->count() >= 3) {
+                continue;
+            }
+
+            $paths = ['cars/inspection.webp', 'cars/hero-showroom.webp'];
+            $sortOrder = (int) $car->photos->max('sort_order');
+
+            foreach ($paths as $path) {
+                if ($car->photos->contains('path', $path)) {
+                    continue;
+                }
+
+                CarPhoto::create([
+                    'car_id' => $car->id,
+                    'path' => $path,
+                    'sort_order' => ++$sortOrder,
+                    'is_primary' => false,
+                ]);
+
+                if ($car->photos->count() + 1 >= 3) {
+                    break;
+                }
+            }
         }
     }
 }

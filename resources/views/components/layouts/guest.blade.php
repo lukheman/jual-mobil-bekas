@@ -164,12 +164,12 @@
         .btn-nav-primary {
             background: linear-gradient(135deg, var(--bs-primary) 0%, var(--bs-primary) 100%);
             color: white;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 15px rgba(29, 91, 66, 0.22);
         }
 
         .btn-nav-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 6px 20px rgba(29, 91, 66, 0.3);
             color: white;
         }
 
@@ -218,6 +218,11 @@
             .site-navbar-actions .btn-nav-outline {
                 display: none;
             }
+
+            .site-navbar-actions .btn-nav-primary {
+                display: inline-flex;
+                padding: 0.6rem 0.9rem;
+            }
         }
 
         /* ===== GUEST PAGE STYLES ===== */
@@ -259,12 +264,12 @@
         .btn-primary {
             background: linear-gradient(135deg, var(--bs-primary) 0%, var(--bs-primary) 100%);
             color: white;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 15px rgba(29, 91, 66, 0.22);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 6px 20px rgba(29, 91, 66, 0.3);
         }
 
         .btn-lg {
@@ -384,7 +389,7 @@
         .auth-section {
             min-height: calc(100vh - 73px);
             margin-top: 73px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #17352b;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -407,7 +412,7 @@
         .bg-shapes .shape {
             position: absolute;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(216, 237, 104, 0.09);
             animation: float 15s infinite ease-in-out;
         }
 
@@ -455,12 +460,12 @@
         }
 
         .login-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: #ffffff;
             backdrop-filter: blur(20px);
-            border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border-radius: 4px;
+            box-shadow: 0 24px 60px rgba(4, 24, 17, 0.28);
             padding: 3rem;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid #dce6e1;
             animation: slideUp 0.6s ease-out;
         }
 
@@ -481,25 +486,16 @@
         }
 
         .brand-logo .icon-wrapper {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--bs-primary) 0%, var(--bs-primary) 100%);
-            border-radius: 20px;
+            width: 72px;
+            height: 72px;
+            background: #1d5b42;
+            border-radius: 4px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1rem;
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
-            }
-            50% {
-                box-shadow: 0 10px 40px rgba(99, 102, 241, 0.6);
-            }
+            box-shadow: 0 10px 25px rgba(29, 91, 66, 0.25);
+            animation: none;
         }
 
         .brand-logo .icon-wrapper i {
@@ -510,7 +506,7 @@
         .brand-logo h1 {
             font-size: 1.75rem;
             font-weight: 700;
-            color: var(--text-primary);
+            color: #17352b;
             margin-bottom: 0.5rem;
         }
 
@@ -535,7 +531,7 @@
 
         .form-floating .form-control:focus {
             border-color: var(--bs-primary);
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            box-shadow: 0 0 0 4px rgba(29, 91, 66, 0.1);
             background: white;
         }
 
@@ -583,7 +579,7 @@
         }
 
         .form-check-input:focus {
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            box-shadow: 0 0 0 4px rgba(29, 91, 66, 0.1);
             border-color: var(--bs-primary);
         }
 
@@ -607,9 +603,9 @@
         .btn-login {
             width: 100%;
             height: 56px;
-            background: linear-gradient(135deg, var(--bs-primary) 0%, var(--bs-primary) 100%);
+            background: #1d5b42;
             border: none;
-            border-radius: 12px;
+            border-radius: 3px;
             color: white;
             font-size: 1.1rem;
             font-weight: 600;
@@ -631,7 +627,7 @@
 
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 10px 25px rgba(29, 91, 66, 0.28);
         }
 
         .btn-login:hover::before {
@@ -792,6 +788,7 @@
                     <i class="fas fa-moon" id="theme-icon"></i>
                 </button>
                 <a href="tel:081234567890" class="btn-nav btn-nav-outline"><i class="fas fa-phone"></i> Hubungi Kami</a>
+                <a href="{{ route('login') }}" class="btn-nav btn-nav-primary"><i class="fas fa-right-to-bracket"></i> Login</a>
                 <button class="mobile-menu-btn">
                     <i class="fas fa-bars"></i>
                 </button>

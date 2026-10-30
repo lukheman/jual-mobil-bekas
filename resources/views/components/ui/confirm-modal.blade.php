@@ -8,7 +8,8 @@
     'icon' => 'fas fa-exclamation-triangle',
     'action' => null,
     'method' => 'DELETE',
-    'cancelUrl' => null
+    'cancelUrl' => null,
+    'formData' => []
 ])
 
 @php
@@ -46,6 +47,12 @@
                 @if(strtoupper($method) !== 'POST')
                     @method($method)
                 @endif
+
+                @foreach ($formData as $field => $value)
+                    @if ($value !== null && $value !== '')
+                        <input type="hidden" name="{{ $field }}" value="{{ $value }}">
+                    @endif
+                @endforeach
 
                 <div class="d-flex justify-content-end gap-2 mt-4">
                     @if($cancelUrl)

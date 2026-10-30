@@ -5,10 +5,11 @@
     'closeUrl' => null,
     'submitLabel' => 'Simpan',
     'closeLabel' => 'Cancel',
-    'submitVariant' => 'primary'
+    'submitVariant' => 'primary',
+    'enctype' => null
 ])
 
-<div class="modal-backdrop-custom">
+<div {{ $attributes->merge(['class' => 'modal-backdrop-custom']) }}>
     <div class="modal-content-custom">
         <div class="modal-header-custom">
             <h5 class="modal-title-custom">
@@ -21,7 +22,7 @@
             @endif
         </div>
 
-        <form method="POST" action="{{ $action }}">
+        <form method="POST" action="{{ $action }}" @if ($enctype) enctype="{{ $enctype }}" @endif>
             @csrf
             @if(strtoupper($method) !== 'POST')
                 @method($method)

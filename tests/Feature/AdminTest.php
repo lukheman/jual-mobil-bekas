@@ -10,13 +10,15 @@ test('the landing page renders with its styles', function () {
         ->assertOk()
         ->assertSee('Temukan mobil yang')
         ->assertSee('Cari mobil impianmu')
-        ->assertSee('RodaTa');
+        ->assertSee('MobilTa')
+        ->assertSee('Login')
+        ->assertSee(route('login'), false);
 });
 
 test('guests can view the login and register pages', function () {
     $this->get('/login')
         ->assertOk()
-        ->assertSee('Sign in to continue to AdminPro')
+        ->assertSee('Masuk ke panel admin RodaTa')
         ->assertSee('function togglePassword', false);
 
     $this->get('/register')
