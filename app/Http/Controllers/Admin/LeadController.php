@@ -10,7 +10,6 @@ use App\Models\Lead;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class LeadController extends Controller
 {
@@ -83,69 +82,4 @@ class LeadController extends Controller
             ->with('success', 'Lead berhasil diperbarui.');
     }
 
-    /**
-     * Export leads to CSV.
-     */
-    public function export(Request $request): StreamedResponse
-    {
-        $status = (string) $request->query('status', '');
-        $type = (string) $request->query('type', '');
-        $search = trim((string) $request->query('q', ''));
-
-        $leads = Lead::query()
-            ->with('car.carModel.brand')
-            ->when($status !== '', fn ($query) => $query->where('status', $status))
-            ->when($type !== '', fn ($query) => $query->where('type', $type))
-            ->when($search !== '', function ($query) use ($search): void {
-                $query->where(function ($query) use ($search): void {
-                    $query->where('name', 'like', "%{$search}%")
-                        ->orWhere('phone', 'like', "%{$search}%")
-                        ->orWhere('email', 'like', "%{$search}%");
-                });
-            })
-            ->latest()
-            ->get();
-
-        $filename = 'leads-'.now()->format('Y-m-d-His').'.csv';
-
-        return response()->streamDownload(function () use ($leads): void {
-            $handle = fopen('php://output', 'w');
-
-            fputcsv($handle, [
-                'ID',
-                'Nama',
-                'No. HP',
-                'Email',
-                'Mobil',
-                'Jenis',
-                'Jadwal',
-                'Pesan',
-                'Status',
-                'Catatan',
-                'Persetujuan',
-                'Dibuat',
-            ]);
-
-            foreach ($leads as $lead) {
-                fputcsv($handle, [
-                    $lead->id,
-                    $lead->name,
-                    $lead->phone,
-                    $lead->email,
-                    $lead->car?->slug,
-                    $lead->type->value,
-                    $lead->preferred_schedule?->format('Y-m-d H:i'),
-                    $lead->message,
-                    $lead->status->value,
-                    $lead->notes,
-                    $lead->consent_at?->format('Y-m-d H:i'),
-                    $lead->created_at?->format('Y-m-d H:i'),
-                ]);
-            }
-
-            fclose($handle);
-        }, $filename, [
-            'Content-Type' => 'text/csv; charset=UTF-8',
-        ]);
-    }
 }

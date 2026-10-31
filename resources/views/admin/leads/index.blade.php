@@ -1229,12 +1229,6 @@
 
 <x-layouts.app title="Lead - RodaTa Admin">
     <x-layout.page-header title="Lead" subtitle="Kelola calon pembeli, status, dan tindak lanjutnya">
-        <x-slot:actions>
-            <x-ui.button variant="secondary" icon="fas fa-file-csv"
-                         :href="route('admin.leads.export', array_filter(['q' => $search, 'status' => $status, 'type' => $type]))">
-                Ekspor CSV
-            </x-ui.button>
-        </x-slot:actions>
     </x-layout.page-header>
 
     {{-- Ringkasan lead --}}

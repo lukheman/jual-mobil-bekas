@@ -4,6 +4,12 @@
     'brandIcon' => 'fas fa-car-side'
 ])
 
+@php
+    $siteName = \App\Models\Setting::query()->where('key', 'site_name')->value('value') ?: 'RodaTa';
+    $title = str_replace(['RodaTa', 'MobilTa'], $siteName, $title);
+    $brandName = $siteName;
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

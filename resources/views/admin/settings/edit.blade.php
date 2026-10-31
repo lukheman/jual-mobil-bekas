@@ -29,7 +29,8 @@
         ],
     ];
 
-    $groupedFields = collect($fields)->groupBy(fn (array $field) => $field['group'] ?? 'identitas');
+    // Pertahankan key konfigurasi. Tanpa preserveKeys, input berubah menjadi settings[0], settings[1], dst.
+    $groupedFields = collect($fields)->groupBy(fn (array $field) => $field['group'] ?? 'identitas', true);
 
     $previewSocials = [
         'facebook_url' => ['icon' => 'fab fa-facebook-f', 'label' => 'Facebook'],

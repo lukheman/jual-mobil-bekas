@@ -6,7 +6,11 @@
 ])
 
 @php
+    $storedSettings = \App\Models\Setting::query()->pluck('value', 'key')->all();
+    $settings = array_merge($storedSettings, (array) $settings);
     $siteName = filled($settings['site_name'] ?? null) ? $settings['site_name'] : 'RodaTa';
+    $title = str_replace(['RodaTa', 'MobilTa'], $siteName, $title ?: $siteName.' — Mobil Bekas Terpercaya');
+    $description = str_replace(['RodaTa', 'MobilTa'], $siteName, $description ?: 'Temukan mobil bekas berkualitas dengan harga transparan dan proses mudah di '.$siteName.'.');
 
     $socialLinks = collect([
         ['key' => 'facebook_url', 'icon' => 'fab fa-facebook-f', 'label' => 'Facebook'],
@@ -800,8 +804,7 @@
                 <button class="theme-toggle" onclick="toggleTheme()">
                     <i class="fas fa-moon" id="theme-icon"></i>
                 </button>
-                <a href="tel:081234567890" class="btn-nav btn-nav-outline"><i class="fas fa-phone"></i> Hubungi Kami</a>
-                <a href="{{ route('login') }}" class="btn-nav btn-nav-primary"><i class="fas fa-right-to-bracket"></i> Login</a>
+                <a href="https://wa.me/{{ $settings['whatsapp_number'] ?? '6281234567890' }}?text={{ rawurlencode('Halo '.$siteName.', saya ingin konsultasi mobil bekas.') }}" target="_blank" rel="noopener noreferrer" class="btn-nav btn-nav-outline"><i class="fab fa-whatsapp"></i> Hubungi Kami</a>
                 <button class="mobile-menu-btn">
                     <i class="fas fa-bars"></i>
                 </button>

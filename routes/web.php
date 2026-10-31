@@ -67,7 +67,6 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     // Leads
     Route::get('/leads', [LeadController::class, 'index'])->name('admin.leads');
     Route::put('/leads/{lead}', [LeadController::class, 'update'])->name('admin.leads.update');
-    Route::get('/leads/export', [LeadController::class, 'export'])->name('admin.leads.export');
 
     // Content & settings
     Route::get('/settings', [SettingController::class, 'edit'])->name('admin.settings');
