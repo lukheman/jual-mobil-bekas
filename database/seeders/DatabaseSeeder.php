@@ -74,6 +74,11 @@ class DatabaseSeeder extends Seeder
                 'status' => CarStatus::Available,
                 'is_featured' => in_array($modelName, ['Avanza', 'HR-V', 'Xpander', 'Innova Zenix'], true),
             ]);
+            $car->features()->sync(
+                Feature::query()
+                    ->whereIn('name', ['Bebas banjir', 'Surat lengkap', 'Siap test drive'])
+                    ->pluck('id')
+            );
             foreach (['cars/'.$image.'.webp', 'cars/inspection.webp', 'cars/hero-showroom.webp'] as $sortOrder => $path) {
                 CarPhoto::create([
                     'car_id' => $car->id,
