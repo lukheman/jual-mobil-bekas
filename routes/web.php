@@ -15,8 +15,8 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Guest\LandingPageController;
 use App\Http\Controllers\Guest\CarDetailController;
+use App\Http\Controllers\Guest\LandingPageController;
 use Illuminate\Support\Facades\Route;
 
 // Guest Routes
@@ -83,6 +83,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/faqs', [FaqController::class, 'index'])->name('admin.faqs');
     Route::post('/faqs', [FaqController::class, 'store'])->name('admin.faqs.store');
     Route::put('/faqs/{faq}', [FaqController::class, 'update'])->name('admin.faqs.update');
+    Route::post('/faqs/{faq}/toggle', [FaqController::class, 'togglePublish'])->name('admin.faqs.toggle');
     Route::delete('/faqs/{faq}', [FaqController::class, 'destroy'])->name('admin.faqs.destroy');
 
     Route::get('/users', [UserController::class, 'index'])->name('admin.users');

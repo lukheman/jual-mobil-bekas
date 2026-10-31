@@ -561,19 +561,14 @@
         </x-layout.sidebar-section>
 
         <x-layout.sidebar-section title="Konten">
-            <x-layout.sidebar-link href="{{ route('admin.pages') }}" icon="fas fa-file-lines" :active="request()->routeIs('admin.pages*')">Halaman</x-layout.sidebar-link>
             <x-layout.sidebar-link href="{{ route('admin.faqs') }}" icon="fas fa-circle-question" :active="request()->routeIs('admin.faqs*')">FAQ</x-layout.sidebar-link>
             <x-layout.sidebar-link href="{{ route('admin.settings') }}" icon="fas fa-cog" :active="request()->routeIs('admin.settings*')">Pengaturan Situs</x-layout.sidebar-link>
         </x-layout.sidebar-section>
 
         <x-layout.sidebar-section title="Akun">
-            <x-layout.sidebar-link href="{{ route('admin.users') }}" icon="fas fa-users" :active="request()->routeIs('admin.users')">Users</x-layout.sidebar-link>
             <x-layout.sidebar-link href="{{ route('admin.profile') }}" icon="fas fa-user-circle" :active="request()->routeIs('admin.profile')">Profile</x-layout.sidebar-link>
         </x-layout.sidebar-section>
 
-        <x-layout.sidebar-section title="Developer">
-            <x-layout.sidebar-link href="{{ route('admin.components') }}" icon="fas fa-cubes" :active="request()->routeIs('admin.components')">Components</x-layout.sidebar-link>
-        </x-layout.sidebar-section>
     </x-layout.sidebar>
 
     <!-- Main Content -->

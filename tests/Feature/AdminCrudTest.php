@@ -313,6 +313,36 @@ test('car photos can be set as primary reordered and deleted', function () {
     expect($first->fresh()->is_primary)->toBeTrue();
 });
 
+test('feature index filters by usage and keeps the list state after a write', function () {
+    $used = Feature::factory()->create(['name' => 'Bebas banjir']);
+    Feature::factory()->create(['name' => 'Kamera belakang']);
+    $car = Car::factory()->create();
+    $used->cars()->attach($car);
+
+    $filters = [
+        'q' => 'banjir',
+        'coverage' => 'used',
+        'sort' => 'cars_desc',
+    ];
+
+    $this->actingAs($this->admin)
+        ->get(route('admin.features', $filters))
+        ->assertOk()
+        ->assertSee('Bebas banjir')
+        ->assertDontSee('Kamera belakang')
+        ->assertSee('Filter aktif:');
+
+    $this->actingAs($this->admin)
+        ->post(route('admin.features.store'), [
+            'name' => 'Servis rutin',
+            'return_q' => $filters['q'],
+            'return_coverage' => $filters['coverage'],
+            'return_sort' => $filters['sort'],
+            'return_page' => '1',
+        ])
+        ->assertRedirect(route('admin.features', $filters + ['page' => '1']));
+});
+
 test('an admin can manage brands car models and features', function () {
     $this->actingAs($this->admin)
         ->post(route('admin.brands.store'), ['name' => 'Honda'])
@@ -407,6 +437,63 @@ test('brand index filters brands and keeps the list state after a write', functi
         ->assertRedirect(route('admin.brands', $filters + ['page' => '1']));
 });
 
+test('car model index filters models and keeps the list state after a write', function () {
+    $toyota = Brand::factory()->create(['name' => 'Toyota']);
+    $honda = Brand::factory()->create(['name' => 'Honda']);
+    $avanza = CarModel::factory()->for($toyota, 'brand')->create(['name' => 'Avanza']);
+    CarModel::factory()->for($toyota, 'brand')->create(['name' => 'Innova']);
+    CarModel::factory()->for($honda, 'brand')->create(['name' => 'Brio']);
+    Car::factory()->for($avanza, 'carModel')->create();
+
+    $filters = [
+        'q' => 'avan',
+        'brand' => (string) $toyota->id,
+        'coverage' => 'with_cars',
+        'sort' => 'cars_desc',
+    ];
+
+    $this->actingAs($this->admin)
+        ->get(route('admin.car-models', $filters))
+        ->assertOk()
+        ->assertSee('Avanza')
+        ->assertDontSee('Innova')
+        ->assertDontSee('Brio')
+        ->assertSee('Filter aktif:');
+
+    $this->actingAs($this->admin)
+        ->post(route('admin.car-models.store'), [
+            'brand_id' => $honda->id,
+            'name' => 'HR-V',
+            'return_q' => $filters['q'],
+            'return_brand' => $filters['brand'],
+            'return_coverage' => $filters['coverage'],
+            'return_sort' => $filters['sort'],
+            'return_page' => '1',
+        ])
+        ->assertRedirect(route('admin.car-models', $filters + ['page' => '1']));
+});
+
+test('a car model is only deleted when no cars use it', function () {
+    $brand = Brand::factory()->create();
+    $usedModel = CarModel::factory()->for($brand, 'brand')->create(['name' => 'Avanza']);
+    Car::factory()->for($usedModel, 'carModel')->create();
+    $freeModel = CarModel::factory()->for($brand, 'brand')->create(['name' => 'Innova']);
+
+    $this->actingAs($this->admin)
+        ->from(route('admin.car-models'))
+        ->delete(route('admin.car-models.destroy', $usedModel))
+        ->assertRedirect(route('admin.car-models'))
+        ->assertSessionHas('error');
+
+    expect(CarModel::find($usedModel->id))->not->toBeNull();
+
+    $this->actingAs($this->admin)
+        ->delete(route('admin.car-models.destroy', $freeModel), ['return_sort' => 'cars_desc'])
+        ->assertRedirect(route('admin.car-models', ['sort' => 'cars_desc']));
+
+    expect(CarModel::find($freeModel->id))->toBeNull();
+});
+
 test('an admin can update lead status and export leads to csv', function () {
     $brand = Brand::factory()->create(['name' => 'Suzuki']);
     $carModel = CarModel::factory()->for($brand, 'brand')->create(['name' => 'Ertiga']);
@@ -472,6 +559,53 @@ test('an admin can update site settings', function () {
 
     expect(Setting::query()->where('key', 'whatsapp_number')->value('value'))->toBe('6281234567890')
         ->and(Setting::query()->where('key', 'opening_hours')->value('value'))->toBe('Senin - Sabtu, 08.00 - 17.00 WITA');
+});
+
+test('faq index filters by status and keeps the list state after a write', function () {
+    Faq::factory()->create(['question' => 'Apakah bisa test drive?', 'sort_order' => 1]);
+    Faq::factory()->unpublished()->create(['question' => 'Apakah ada garansi mesin?', 'sort_order' => 2]);
+
+    $filters = [
+        'q' => 'test drive',
+        'status' => 'published',
+        'sort' => 'newest',
+    ];
+
+    $this->actingAs($this->admin)
+        ->get(route('admin.faqs', $filters))
+        ->assertOk()
+        ->assertSee('Apakah bisa test drive?')
+        ->assertDontSee('Apakah ada garansi mesin?')
+        ->assertSee('Filter aktif:');
+
+    $this->actingAs($this->admin)
+        ->post(route('admin.faqs.store'), [
+            'question' => 'Berapa lama proses balik nama?',
+            'answer' => 'Sekitar 3 hari kerja.',
+            'sort_order' => 3,
+            'is_published' => '1',
+            'return_q' => $filters['q'],
+            'return_status' => $filters['status'],
+            'return_sort' => $filters['sort'],
+            'return_page' => '1',
+        ])
+        ->assertRedirect(route('admin.faqs', $filters + ['page' => '1']));
+});
+
+test('an admin can toggle a faq between published and draft', function () {
+    $faq = Faq::factory()->create(['is_published' => true]);
+
+    $this->actingAs($this->admin)
+        ->post(route('admin.faqs.toggle', $faq), ['return_status' => 'published'])
+        ->assertRedirect(route('admin.faqs', ['status' => 'published']));
+
+    expect($faq->fresh()->is_published)->toBeFalse();
+
+    $this->actingAs($this->admin)
+        ->post(route('admin.faqs.toggle', $faq))
+        ->assertRedirect(route('admin.faqs'));
+
+    expect($faq->fresh()->is_published)->toBeTrue();
 });
 
 test('an admin can manage pages and faqs', function () {

@@ -2,7 +2,20 @@
     'title' => 'RodaTa — Mobil Bekas Terpercaya',
     'description' => 'Temukan mobil bekas berkualitas dengan harga transparan dan proses mudah di RodaTa.',
     'type' => 'guest',
+    'settings' => [],
 ])
+
+@php
+    $siteName = filled($settings['site_name'] ?? null) ? $settings['site_name'] : 'RodaTa';
+
+    $socialLinks = collect([
+        ['key' => 'facebook_url', 'icon' => 'fab fa-facebook-f', 'label' => 'Facebook'],
+        ['key' => 'instagram_url', 'icon' => 'fab fa-instagram', 'label' => 'Instagram'],
+        ['key' => 'tiktok_url', 'icon' => 'fab fa-tiktok', 'label' => 'TikTok'],
+        ['key' => 'youtube_url', 'icon' => 'fab fa-youtube', 'label' => 'YouTube'],
+        ['key' => 'twitter_url', 'icon' => 'fab fa-x-twitter', 'label' => 'X / Twitter'],
+    ])->filter(fn (array $social) => filled($settings[$social['key']] ?? null));
+@endphp
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -773,7 +786,7 @@
         <div class="site-navbar-container">
             <a href="{{ route('home') }}" class="site-brand">
                 <i class="fas fa-car-side"></i>
-                <span>RodaTa</span>
+                <span>{{ $siteName }}</span>
             </a>
 
             <ul class="site-nav">
@@ -819,7 +832,7 @@
                     <div class="footer-brand">
                          <a href="{{ route('home') }}" class="site-brand">
                             <i class="fas fa-car-side"></i>
-                            <span>RodaTa</span>
+                            <span>{{ $siteName }}</span>
                         </a>
                          <p>Teman perjalanan Anda menemukan mobil bekas berkualitas, jujur, dan siap jalan.</p>
                     </div>
@@ -855,13 +868,16 @@
                 </div>
 
                 <div class="footer-bottom">
-                    <p>&copy; {{ date('Y') }} RodaTa. Semua hak dilindungi.</p>
-                    <div class="footer-social">
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                    </div>
+                    <p>&copy; {{ date('Y') }} {{ $siteName }}. Semua hak dilindungi.</p>
+                    @if ($socialLinks->isNotEmpty())
+                        <div class="footer-social">
+                            @foreach ($socialLinks as $social)
+                                <a href="{{ $settings[$social['key']] }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $social['label'] }}">
+                                    <i class="{{ $social['icon'] }}"></i>
+                                </a>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             </div>
         </footer>

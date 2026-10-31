@@ -8,7 +8,7 @@
     $primary = $car->primaryPhoto ?? $car->photos->first();
 @endphp
 
-<x-layouts.guest :title="$name.' — MobilTa'" :description="'Detail '.$name.' dengan foto dan informasi lengkap.'">
+<x-layouts.guest :title="$name.' — MobilTa'" :description="'Detail '.$name.' dengan foto dan informasi lengkap.'" :settings="$settings">
     <div class="car-detail-page"><div class="detail-container">
         <a href="{{ route('home') }}#stok" class="back-link"><i class="fas fa-arrow-left"></i> Kembali ke stok</a>
         <header class="detail-heading"><div><span class="detail-kicker">UNIT TERSEDIA</span><h1>{{ $name }}</h1><p>{{ $car->city }} <span>•</span> {{ $car->year }}</p></div><strong class="detail-price">Rp {{ number_format($car->price, 0, ',', '.') }}</strong></header>

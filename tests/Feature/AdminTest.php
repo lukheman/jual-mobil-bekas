@@ -1,5 +1,10 @@
 <?php
 
+use App\Enums\ClickType;
+use App\Enums\LeadStatus;
+use App\Models\Car;
+use App\Models\ClickLog;
+use App\Models\Lead;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
@@ -43,6 +48,8 @@ test('authenticated users can view the admin pages', function () {
     $this->actingAs($user)->get('/admin/profile')
         ->assertOk()
         ->assertSee('Informasi Profile')
+        ->assertSee('Keamanan Akun')
+        ->assertSee('Foto Profil')
         ->assertSee('function togglePasswordSection', false);
     $this->actingAs($user)->get('/admin/components')->assertOk()->assertSee('Component Library');
     $this->actingAs($user)->get('/admin/components?section=media')
@@ -57,6 +64,44 @@ test('authenticated users can view the admin pages', function () {
         ->assertOk()
         ->assertSee('href="'.route('admin.users', ['edit' => $otherUser->id]).'"', false)
         ->assertSee('href="'.route('admin.users', ['delete' => $otherUser->id]).'"', false);
+});
+
+test('the dashboard summarizes inventory leads and engagement', function () {
+    $user = User::factory()->create();
+
+    $car = Car::factory()->available()->create([
+        'price' => 200_000_000,
+        'views_count' => 120,
+        'city' => 'Balikpapan',
+    ]);
+    Car::factory()->sold()->create(['views_count' => 30]);
+
+    Lead::factory()->create([
+        'car_id' => $car->id,
+        'name' => 'Rina Pembeli',
+        'status' => LeadStatus::New,
+    ]);
+    Lead::factory()->deal()->create([
+        'car_id' => $car->id,
+        'name' => 'Budi Deal',
+    ]);
+
+    ClickLog::create([
+        'car_id' => $car->id,
+        'type' => ClickType::Whatsapp,
+    ]);
+
+    $this->actingAs($user)->get('/admin/dashboard')
+        ->assertOk()
+        ->assertSee('Dashboard Overview')
+        ->assertSee('Status Inventaris')
+        ->assertSee('Lead Terbaru')
+        ->assertSee('Mobil Paling Dilihat')
+        ->assertSee('Rina Pembeli')
+        ->assertSee('Budi Deal')
+        ->assertSee('Pipeline Lead')
+        ->assertSee('Sebaran Merek')
+        ->assertSee('Perlu Tindakan');
 });
 
 test('users can log in', function () {
