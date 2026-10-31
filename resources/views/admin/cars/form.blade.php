@@ -1350,7 +1350,7 @@
                         <span class="form-section-icon"><i class="fas fa-bullhorn"></i></span>
                         <div>
                             <h5>Publikasi</h5>
-                            <p>Atur status dan lokasi unit di katalog.</p>
+                            <p>Atur status dan visibilitas unit di katalog.</p>
                         </div>
                     </div>
 
@@ -1362,23 +1362,6 @@
                         required
                         :error="$errors->first('status')"
                     />
-
-                    <div class="mb-3">
-                        <label class="form-label" for="city">
-                            Kota <span class="required-mark">*</span>
-                        </label>
-                        <input type="text" id="city" name="city" value="{{ old('city', $car->city) }}"
-                               class="form-control @error('city') is-invalid @enderror"
-                               list="city-options" placeholder="Samarinda" required>
-                        <datalist id="city-options">
-                            @foreach ($cities as $cityOption)
-                                <option value="{{ $cityOption }}"></option>
-                            @endforeach
-                        </datalist>
-                        @error('city')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
 
                     <div class="featured-option">
                         <div class="featured-option-copy">

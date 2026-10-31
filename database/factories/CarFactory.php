@@ -37,7 +37,6 @@ class CarFactory extends Factory
             'document_completeness' => fake()->randomElement(['Lengkap', 'BPKB saja', 'STNK saja']),
             'condition' => fake()->sentence(12),
             'description' => fake()->paragraphs(2, true),
-            'city' => fake()->randomElement(['Balikpapan', 'Samarinda', 'Banjarmasin', 'Makassar', 'Tarakan', 'Pontianak']),
             'status' => CarStatus::Available,
             'is_featured' => fake()->boolean(20),
             'views_count' => fake()->numberBetween(0, 500),

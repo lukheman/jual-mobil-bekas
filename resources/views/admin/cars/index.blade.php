@@ -1011,7 +1011,7 @@
             <div class="inventory-search">
                 <i class="fas fa-search"></i>
                 <input type="search" id="q" name="q" value="{{ $search }}"
-                       placeholder="Cari nama, merek, model, kota..." aria-label="Cari mobil">
+                       placeholder="Cari nama, merek, atau model..." aria-label="Cari mobil">
                 @if ($search !== '')
                     <a href="{{ route('admin.cars', array_filter(['status' => $status, 'brand' => $brand, 'arsip' => $showArchived ? 1 : null])) }}"
                        class="inventory-search-clear" aria-label="Hapus pencarian">
@@ -1146,8 +1146,8 @@
                                             <span><i class="fas fa-gauge-high"></i> {{ number_format($car->mileage, 0, ',', '.') }} km</span>
                                             <span><i class="fas fa-gear"></i> {{ $car->transmission?->label() }}</span>
                                         </div>
-                                        <div class="car-cell-location">
-                                            <i class="fas fa-location-dot"></i> {{ $car->city }}
+                                        @if ($car->trashed() || $car->photos_count === 0)
+                                            <div class="car-cell-location">
                                             @if ($car->trashed())
                                                 <x-ui.badge variant="danger" icon="fas fa-box-archive">Diarsipkan</x-ui.badge>
                                             @elseif ($car->photos_count === 0)
@@ -1155,7 +1155,8 @@
                                                     <i class="fas fa-triangle-exclamation"></i> Belum ada foto
                                                 </span>
                                             @endif
-                                        </div>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </td>

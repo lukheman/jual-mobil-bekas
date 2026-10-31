@@ -1320,7 +1320,7 @@
                                     </span>
                                     <span class="dash-car-main">
                                         <strong>{{ $carLabel($car) }}</strong>
-                                        <span>{{ $car->year }} · {{ $car->city }}</span>
+                                        <span>{{ $car->year }}</span>
                                     </span>
                                     <span class="dash-car-side">
                                         <span class="dash-car-price">Rp {{ number_format($car->price, 0, ',', '.') }}</span>

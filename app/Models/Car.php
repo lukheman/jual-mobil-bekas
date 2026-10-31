@@ -43,7 +43,6 @@ class Car extends Model
         'document_completeness',
         'condition',
         'description',
-        'city',
         'status',
         'is_featured',
         'views_count',

@@ -71,7 +71,6 @@ class DatabaseSeeder extends Seeder
                 'document_completeness' => 'Lengkap',
                 'condition' => 'Terawat, siap pakai, dan sudah melalui inspeksi showroom.',
                 'description' => 'Unit pilihan RodaTa dengan riwayat perawatan yang jelas.',
-                'city' => 'Samarinda',
                 'status' => CarStatus::Available,
                 'is_featured' => in_array($modelName, ['Avanza', 'HR-V', 'Xpander', 'Innova Zenix'], true),
             ]);

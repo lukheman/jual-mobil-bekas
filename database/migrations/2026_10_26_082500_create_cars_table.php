@@ -27,7 +27,6 @@ return new class extends Migration
             $table->string('document_completeness', 50)->nullable();
             $table->text('condition')->nullable();
             $table->longText('description')->nullable();
-            $table->string('city', 100)->index();
             $table->string('status', 20)->default('available')->index();
             $table->boolean('is_featured')->default(false);
             $table->unsignedBigInteger('views_count')->default(0);

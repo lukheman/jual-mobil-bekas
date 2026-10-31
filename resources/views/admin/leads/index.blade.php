@@ -1450,7 +1450,7 @@
                                             {{ $leadCarName }}
                                         </a>
                                         <span class="lead-car-meta">
-                                            {{ $lead->car->year }} · {{ $lead->car->city }}
+                                            {{ $lead->car->year }}
                                         </span>
                                     </div>
                                 @else

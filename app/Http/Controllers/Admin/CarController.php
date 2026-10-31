@@ -46,7 +46,6 @@ class CarController extends Controller
                 $query->where(function ($query) use ($search): void {
                     $query->where('slug', 'like', "%{$search}%")
                         ->orWhere('variant', 'like', "%{$search}%")
-                        ->orWhere('city', 'like', "%{$search}%")
                         ->orWhereHas('carModel', fn ($query) => $query->where('name', 'like', "%{$search}%"))
                         ->orWhereHas('carModel.brand', fn ($query) => $query->where('name', 'like', "%{$search}%"));
                 });
@@ -99,7 +98,6 @@ class CarController extends Controller
             'fuelTypes' => FuelType::cases(),
             'bodyTypes' => BodyType::cases(),
             'statuses' => CarStatus::cases(),
-            'cities' => $this->cityOptions(),
         ]);
     }
 
@@ -136,7 +134,6 @@ class CarController extends Controller
             'fuelTypes' => FuelType::cases(),
             'bodyTypes' => BodyType::cases(),
             'statuses' => CarStatus::cases(),
-            'cities' => $this->cityOptions(),
         ]);
     }
 
@@ -329,7 +326,6 @@ class CarController extends Controller
             'document_completeness' => $request->input('document_completeness'),
             'condition' => $request->input('condition'),
             'description' => $request->input('description'),
-            'city' => $request->input('city'),
             'status' => $request->input('status'),
             'is_featured' => $request->boolean('is_featured'),
         ];
@@ -380,18 +376,4 @@ class CarController extends Controller
             ->all();
     }
 
-    /**
-     * Get available city options.
-     *
-     * @return array<int, string>
-     */
-    private function cityOptions(): array
-    {
-        return Car::query()
-            ->select('city')
-            ->distinct()
-            ->orderBy('city')
-            ->pluck('city')
-            ->all();
-    }
 }
