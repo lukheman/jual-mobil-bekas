@@ -87,19 +87,43 @@
 
         /* ===== NAVBAR (shared across all pages) ===== */
         .site-navbar {
+            --nav-bg: rgba(255, 255, 255, 0.82);
+            --nav-text: #17352b;
+            --nav-muted: #4b5f56;
+            --nav-accent: #1d5b42;
+            --nav-hover-bg: rgba(29, 91, 66, 0.08);
+            --nav-border: rgba(23, 53, 43, 0.10);
+
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
+            background: var(--nav-bg);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            backdrop-filter: blur(20px) saturate(140%);
+            border-bottom: 1px solid var(--nav-border);
+            color: var(--nav-text);
             transition: all 0.3s ease;
         }
 
         [data-theme="dark"] .site-navbar {
-            background: rgba(15, 23, 42, 0.95);
+            --nav-bg: rgba(15, 23, 42, 0.82);
+            --nav-text: #f1f5f9;
+            --nav-muted: #cbd5e1;
+            --nav-accent: #d8ed68;
+            --nav-hover-bg: rgba(216, 237, 104, 0.12);
+            --nav-border: rgba(255, 255, 255, 0.12);
+        }
+
+        @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+            .site-navbar {
+                --nav-bg: rgba(255, 255, 255, 0.97);
+            }
+
+            [data-theme="dark"] .site-navbar {
+                --nav-bg: rgba(15, 23, 42, 0.97);
+            }
         }
 
         .site-navbar-container {
@@ -116,14 +140,14 @@
             align-items: center;
             gap: 12px;
             text-decoration: none;
-            color: var(--text-primary);
+            color: var(--nav-text);
             font-size: 1.2rem;
             font-weight: 700;
         }
 
         .site-brand i {
             font-size: 1.5rem;
-            color: var(--bs-primary);
+            color: var(--nav-accent);
         }
 
         .site-nav {
@@ -137,14 +161,14 @@
         }
 
         .site-nav-link {
-            color: var(--text-secondary);
+            color: var(--nav-muted);
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s ease;
         }
 
         .site-nav-link:hover {
-            color: var(--bs-primary);
+            color: var(--nav-accent);
         }
 
         .site-navbar-actions {
@@ -169,13 +193,14 @@
 
         .btn-nav-outline {
             background: transparent;
-            border: 2px solid var(--border-color);
-            color: var(--text-primary);
+            border: 1px solid var(--nav-border);
+            color: var(--nav-text);
         }
 
         .btn-nav-outline:hover {
-            border-color: var(--bs-primary);
-            color: var(--bs-primary);
+            border-color: var(--nav-accent);
+            color: var(--nav-accent);
+            background: var(--nav-hover-bg);
         }
 
         .btn-nav-primary {
@@ -194,7 +219,7 @@
         .theme-toggle {
             background: transparent;
             border: none;
-            color: var(--text-secondary);
+            color: var(--nav-muted);
             cursor: pointer;
             padding: 0.5rem;
             border-radius: 8px;
@@ -205,8 +230,8 @@
         }
 
         .theme-toggle:hover {
-            background: var(--border-color);
-            color: var(--bs-primary);
+            background: var(--nav-hover-bg);
+            color: var(--nav-accent);
         }
 
         .theme-toggle i {
@@ -218,7 +243,7 @@
             display: none;
             background: transparent;
             border: none;
-            color: var(--text-primary);
+            color: var(--nav-text);
             font-size: 1.5rem;
             cursor: pointer;
         }
