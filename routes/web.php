@@ -15,12 +15,14 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Guest\AboutController;
 use App\Http\Controllers\Guest\CarDetailController;
 use App\Http\Controllers\Guest\LandingPageController;
 use Illuminate\Support\Facades\Route;
 
 // Guest Routes
 Route::get('/', LandingPageController::class)->name('home');
+Route::get('/tentang-kami', AboutController::class)->name('about');
 Route::get('/mobil/{car:slug}', [CarDetailController::class, 'show'])->name('cars.show');
 
 // Auth Routes

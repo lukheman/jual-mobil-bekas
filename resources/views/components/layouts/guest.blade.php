@@ -241,11 +241,104 @@
         /* Mobile Menu */
         .mobile-menu-btn {
             display: none;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
             background: transparent;
             border: none;
+            border-radius: 10px;
             color: var(--nav-text);
-            font-size: 1.5rem;
+            font-size: 1.35rem;
             cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .mobile-menu-btn:hover,
+        .mobile-menu-btn:focus-visible {
+            background: var(--nav-hover-bg);
+            color: var(--nav-accent);
+            outline: none;
+        }
+
+        .mobile-menu-btn .mobile-menu-icon-close {
+            display: none;
+        }
+
+        .mobile-menu-btn[aria-expanded="true"] .mobile-menu-icon-open {
+            display: none;
+        }
+
+        .mobile-menu-btn[aria-expanded="true"] .mobile-menu-icon-close {
+            display: inline-block;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            padding: 0.5rem 1.25rem 1.25rem;
+            background: #ffffff;
+            border-bottom: 1px solid var(--nav-border);
+            box-shadow: 0 18px 30px rgba(15, 23, 42, 0.12);
+        }
+
+        [data-theme="dark"] .mobile-menu {
+            background: #0f172a;
+        }
+
+        .mobile-menu.is-open {
+            display: block;
+        }
+
+        .mobile-menu ul {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .mobile-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem 0.9rem;
+            border-radius: 10px;
+            color: var(--nav-text);
+            text-decoration: none;
+            font-weight: 600;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .mobile-menu a:hover,
+        .mobile-menu a:focus-visible {
+            background: var(--nav-hover-bg);
+            color: var(--nav-accent);
+            outline: none;
+        }
+
+        .mobile-menu .mobile-menu-cta {
+            justify-content: center;
+            margin-top: 0.75rem;
+            background: var(--nav-accent);
+            color: #ffffff;
+        }
+
+        .mobile-menu .mobile-menu-cta:hover,
+        .mobile-menu .mobile-menu-cta:focus-visible {
+            background: var(--nav-accent);
+            color: #ffffff;
+            filter: brightness(0.95);
+        }
+
+        [data-theme="dark"] .mobile-menu .mobile-menu-cta,
+        [data-theme="dark"] .mobile-menu .mobile-menu-cta:hover,
+        [data-theme="dark"] .mobile-menu .mobile-menu-cta:focus-visible {
+            color: #10231b;
         }
 
         @media (max-width: 768px) {
@@ -254,7 +347,7 @@
             }
 
             .mobile-menu-btn {
-                display: block;
+                display: inline-flex;
             }
 
             .site-navbar-actions .btn-nav-outline {
@@ -822,6 +915,7 @@
                 <li><a href="/#stok" class="site-nav-link">Stok Mobil</a></li>
                 <li><a href="/#keunggulan" class="site-nav-link">Kenapa Kami</a></li>
                 <li><a href="/#proses" class="site-nav-link">Cara Beli</a></li>
+                <li><a href="{{ route('about') }}" class="site-nav-link">Tentang Kami</a></li>
                 <li><a href="/#kontak" class="site-nav-link">Kontak</a></li>
             </ul>
 
@@ -830,10 +924,24 @@
                     <i class="fas fa-moon" id="theme-icon"></i>
                 </button>
                 <a href="https://wa.me/{{ $settings['whatsapp_number'] ?? '6281234567890' }}?text={{ rawurlencode('Halo '.$siteName.', saya ingin konsultasi mobil bekas.') }}" target="_blank" rel="noopener noreferrer" class="btn-nav btn-nav-outline"><i class="fab fa-whatsapp"></i> Hubungi Kami</a>
-                <button class="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
+                <button type="button" class="mobile-menu-btn" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="mobile-menu">
+                    <i class="fas fa-bars mobile-menu-icon-open"></i>
+                    <i class="fas fa-xmark mobile-menu-icon-close"></i>
                 </button>
             </div>
+        </div>
+
+        <div class="mobile-menu" id="mobile-menu">
+            <ul>
+                <li><a href="/#stok"><i class="fas fa-car"></i> Stok Mobil</a></li>
+                <li><a href="/#keunggulan"><i class="fas fa-shield-halved"></i> Kenapa Kami</a></li>
+                <li><a href="/#proses"><i class="fas fa-route"></i> Cara Beli</a></li>
+                <li><a href="/#testimoni"><i class="fas fa-star"></i> Testimoni</a></li>
+                <li><a href="/#kontak"><i class="fas fa-envelope"></i> Kontak</a></li>
+            </ul>
+            <a href="https://wa.me/{{ $settings['whatsapp_number'] ?? '6281234567890' }}?text={{ rawurlencode('Halo '.$siteName.', saya ingin konsultasi mobil bekas.') }}" target="_blank" rel="noopener noreferrer" class="mobile-menu-cta">
+                <i class="fab fa-whatsapp"></i> Hubungi Kami
+            </a>
         </div>
     </nav>
 
@@ -873,6 +981,7 @@
                                  <li><a href="#keunggulan">Keunggulan</a></li>
                                  <li><a href="#proses">Cara Beli</a></li>
                                  <li><a href="#kontak">Kontak</a></li>
+                                 <li><a href="{{ route('about') }}">Tentang Kami</a></li>
                             </ul>
                         </div>
                         <div class="footer-column">
@@ -947,6 +1056,53 @@
         }
 
         initTheme();
+
+        // Mobile navigation menu
+        (function () {
+            const menuButton = document.querySelector('.mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            if (!menuButton || !mobileMenu) {
+                return;
+            }
+
+            const setMenuState = (isOpen) => {
+                mobileMenu.classList.toggle('is-open', isOpen);
+                menuButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                menuButton.setAttribute('aria-label', isOpen ? 'Tutup menu navigasi' : 'Buka menu navigasi');
+            };
+
+            menuButton.addEventListener('click', () => {
+                setMenuState(!mobileMenu.classList.contains('is-open'));
+            });
+
+            mobileMenu.querySelectorAll('a').forEach((link) => {
+                link.addEventListener('click', () => setMenuState(false));
+            });
+
+            document.addEventListener('click', (event) => {
+                if (!mobileMenu.classList.contains('is-open')) {
+                    return;
+                }
+
+                if (!mobileMenu.contains(event.target) && !menuButton.contains(event.target)) {
+                    setMenuState(false);
+                }
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && mobileMenu.classList.contains('is-open')) {
+                    setMenuState(false);
+                    menuButton.focus();
+                }
+            });
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    setMenuState(false);
+                }
+            });
+        })();
 
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
