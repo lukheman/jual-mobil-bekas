@@ -19,7 +19,9 @@ class LandingPageController extends Controller
      */
     public function __invoke(): View
     {
-        $filters = request()->only(['brand', 'body_type', 'max_price']);
+        $filters = request()->only(['brand', 'body_type', 'max_price', 'sort']);
+        $sort = (string) ($filters['sort'] ?? '');
+
         $carQuery = Car::query()
             ->available()
             ->with(['carModel.brand', 'primaryPhoto']);
@@ -29,6 +31,9 @@ class LandingPageController extends Controller
         });
         $carQuery->when($filters['body_type'] ?? null, fn ($query, string $bodyType) => $query->where('body_type', $bodyType));
         $carQuery->when($filters['max_price'] ?? null, fn ($query, string $maxPrice) => $query->where('price', '<=', (int) $maxPrice));
+
+        $carQuery->when($sort === 'price_asc', fn ($query) => $query->orderBy('price'));
+        $carQuery->when($sort === 'price_desc', fn ($query) => $query->orderByDesc('price'));
 
         $featuredCars = (clone $carQuery)
             ->featured()
@@ -44,6 +49,7 @@ class LandingPageController extends Controller
         return view('guest.landing-page', [
             'featuredCars' => $featuredCars,
             'latestCars' => $latestCars,
+            'filters' => $filters,
             'brands' => Brand::query()->withCount(['cars' => fn ($query) => $query->available()])->orderBy('name')->get(),
             'faqs' => Faq::published()->limit(5)->get(),
             'settings' => Setting::query()->pluck('value', 'key'),
