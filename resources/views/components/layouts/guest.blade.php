@@ -31,7 +31,7 @@
     <title>{{ $title }}</title>
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/fontawesome-free-7.2.0-web/css/all.min.css')}}">
 
@@ -914,6 +914,7 @@
             <ul class="site-nav">
                 <li><a href="{{ route('about') }}" class="site-nav-link">Tentang</a></li>
                 <li><a href="/#stok" class="site-nav-link">Stok Mobil</a></li>
+                <li><a href="{{ route('sell-car') }}" class="site-nav-link">Jual Mobil</a></li>
                 <li><a href="/#keunggulan" class="site-nav-link">Kenapa Kami</a></li>
                 <li><a href="/#proses" class="site-nav-link">Cara Beli</a></li>
                 <li><a href="/#kontak" class="site-nav-link">Kontak</a></li>
@@ -934,6 +935,7 @@
         <div class="mobile-menu" id="mobile-menu">
             <ul>
                 <li><a href="/#stok"><i class="fas fa-car"></i> Stok Mobil</a></li>
+                <li><a href="{{ route('sell-car') }}"><i class="fas fa-hand-holding-dollar"></i> Jual Mobil</a></li>
                 <li><a href="/#keunggulan"><i class="fas fa-shield-halved"></i> Kenapa Kami</a></li>
                 <li><a href="/#proses"><i class="fas fa-route"></i> Cara Beli</a></li>
                 <li><a href="/#testimoni"><i class="fas fa-star"></i> Testimoni</a></li>
@@ -979,6 +981,7 @@
                             <ul>
                                  <li><a href="{{ route('about') }}">Tentang</a></li>
                                  <li><a href="#stok">Stok Mobil</a></li>
+                                 <li><a href="{{ route('sell-car') }}">Jual Mobil</a></li>
                                  <li><a href="#keunggulan">Keunggulan</a></li>
                                  <li><a href="#proses">Cara Beli</a></li>
                                  <li><a href="#kontak">Kontak</a></li>

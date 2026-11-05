@@ -18,12 +18,15 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Guest\AboutController;
 use App\Http\Controllers\Guest\CarDetailController;
 use App\Http\Controllers\Guest\LandingPageController;
+use App\Http\Controllers\Guest\SellCarController;
 use Illuminate\Support\Facades\Route;
 
 // Guest Routes
 Route::get('/', LandingPageController::class)->name('home');
 Route::get('/tentang-kami', AboutController::class)->name('about');
 Route::get('/mobil/{car:slug}', [CarDetailController::class, 'show'])->name('cars.show');
+Route::get('/jual-mobil', [SellCarController::class, 'create'])->name('sell-car');
+Route::post('/jual-mobil', [SellCarController::class, 'store'])->name('sell-car.store');
 
 // Auth Routes
 Route::get('/login', [LoginController::class, 'show'])->name('login');

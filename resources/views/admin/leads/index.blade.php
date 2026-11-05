@@ -732,6 +732,11 @@
             color: var(--bs-warning);
         }
 
+        .lead-type.is-sell {
+            background: rgba(29, 91, 66, 0.13);
+            color: #1d5b42;
+        }
+
         .lead-status.is-new {
             background: rgba(79, 130, 144, 0.13);
             color: var(--bs-info);
@@ -1449,14 +1454,14 @@
                                     </div>
                                 @else
                                     <span class="lead-general">
-                                        <i class="fas fa-comments"></i>
-                                        Pertanyaan umum
+                                        <i class="{{ $lead->type->value === 'sell' ? 'fas fa-hand-holding-dollar' : 'fas fa-comments' }}"></i>
+                                        {{ $lead->type->value === 'sell' ? 'Penjualan mobil' : 'Pertanyaan umum' }}
                                     </span>
                                 @endif
                             </td>
                             <td data-label="Jenis">
                                 <span class="lead-type is-{{ $typeClass }}">
-                                    <i class="{{ $lead->type->value === 'test_drive' ? 'fas fa-car-side' : 'fas fa-comment-dots' }}"></i>
+                                    <i class="{{ match ($lead->type->value) { 'test_drive' => 'fas fa-car-side', 'sell' => 'fas fa-hand-holding-dollar', default => 'fas fa-comment-dots' } }}"></i>
                                     {{ $lead->type->label() }}
                                 </span>
                             </td>
@@ -1559,7 +1564,7 @@
                             {{ $editingLead->status->label() }}
                         </span>
                         <span class="lead-type is-{{ $editingTypeClass }}">
-                            <i class="{{ $editingLead->type->value === 'test_drive' ? 'fas fa-car-side' : 'fas fa-comment-dots' }}"></i>
+                            <i class="{{ match ($editingLead->type->value) { 'test_drive' => 'fas fa-car-side', 'sell' => 'fas fa-hand-holding-dollar', default => 'fas fa-comment-dots' } }}"></i>
                             {{ $editingLead->type->label() }}
                         </span>
                     </div>
