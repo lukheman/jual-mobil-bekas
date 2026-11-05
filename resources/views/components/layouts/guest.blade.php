@@ -912,10 +912,10 @@
             </a>
 
             <ul class="site-nav">
+                <li><a href="{{ route('about') }}" class="site-nav-link">Tentang</a></li>
                 <li><a href="/#stok" class="site-nav-link">Stok Mobil</a></li>
                 <li><a href="/#keunggulan" class="site-nav-link">Kenapa Kami</a></li>
                 <li><a href="/#proses" class="site-nav-link">Cara Beli</a></li>
-                <li><a href="{{ route('about') }}" class="site-nav-link">Tentang Kami</a></li>
                 <li><a href="/#kontak" class="site-nav-link">Kontak</a></li>
             </ul>
 
@@ -977,11 +977,11 @@
                         <div class="footer-column">
                             <h4>Jelajahi</h4>
                             <ul>
+                                 <li><a href="{{ route('about') }}">Tentang</a></li>
                                  <li><a href="#stok">Stok Mobil</a></li>
                                  <li><a href="#keunggulan">Keunggulan</a></li>
                                  <li><a href="#proses">Cara Beli</a></li>
                                  <li><a href="#kontak">Kontak</a></li>
-                                 <li><a href="{{ route('about') }}">Tentang Kami</a></li>
                             </ul>
                         </div>
                         <div class="footer-column">

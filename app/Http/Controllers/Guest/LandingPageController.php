@@ -35,19 +35,12 @@ class LandingPageController extends Controller
         $carQuery->when($sort === 'price_asc', fn ($query) => $query->orderBy('price'));
         $carQuery->when($sort === 'price_desc', fn ($query) => $query->orderByDesc('price'));
 
-        $featuredCars = (clone $carQuery)
-            ->featured()
-            ->latest()
-            ->limit(4)
-            ->get();
-
         $latestCars = (clone $carQuery)
             ->latest()
             ->limit(8)
             ->get();
 
         return view('guest.landing-page', [
-            'featuredCars' => $featuredCars,
             'latestCars' => $latestCars,
             'filters' => $filters,
             'brands' => Brand::query()->withCount(['cars' => fn ($query) => $query->available()])->orderBy('name')->get(),
