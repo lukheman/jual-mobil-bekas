@@ -2,12 +2,12 @@
     $siteName = $settings['site_name'] ?? 'RodaTa';
     $phone = $settings['phone_number'] ?? '081234567890';
     $whatsapp = $settings['whatsapp_number'] ?? '6281234567890';
-    $whatsappUrl = 'https://wa.me/'.$whatsapp.'?text='.rawurlencode('Halo '.$siteName.', saya ingin konsultasi mobil bekas.');
+    $whatsappUrl = 'https://wa.me/'.$whatsapp.'?text='.rawurlencode('Halo '.$siteName.', saya ingin konsultasi jual beli mobil bekas.');
 @endphp
 
 <x-layouts.guest
-    :title="'Tentang '.$siteName.' — Mobil Bekas Terpercaya'"
-    :description="'Kenali '.$siteName.', showroom mobil bekas yang mengutamakan kualitas, transparansi, dan proses pembelian yang mudah.'"
+    :title="'Tentang '.$siteName.' — Jual Beli Mobil Bekas Terpercaya'"
+    :description="'Kenali '.$siteName.', showroom jual beli mobil bekas yang mengutamakan kualitas, transparansi, dan proses yang mudah.'"
     :settings="$settings"
 >
     <div class="about-page">
@@ -16,22 +16,22 @@
             <div class="about-hero-glow about-hero-glow-two"></div>
             <div class="about-container about-hero-inner">
                 <div class="about-kicker"><span></span> TENTANG {{ strtoupper($siteName) }}</div>
-                <h1>Teman perjalanan<br>untuk pilihan <span>terbaikmu.</span></h1>
-                <p>Kami membantu kamu menemukan mobil bekas berkualitas dengan informasi yang jujur, harga yang jelas, dan proses yang terasa mudah.</p>
-                <a href="{{ route('home') }}#stok" class="about-button">Lihat koleksi mobil <i class="fas fa-arrow-right"></i></a>
+                <h1>Teman jual beli<br>mobil <span>bekasmu.</span></h1>
+                <p>Kami membantu kamu menjual mobil lama atau menemukan mobil bekas berkualitas — dengan informasi jujur, harga jelas, dan proses yang terasa mudah.</p>
+                <a href="{{ route('home') }}#stok" class="about-button">Lihat stok mobil <i class="fas fa-arrow-right"></i></a>
             </div>
-            <div class="about-hero-note"><i class="fas fa-shield-halved"></i><span>Dipilih dan diperiksa<br>sebelum sampai kepadamu</span></div>
+            <div class="about-hero-note"><i class="fas fa-shield-halved"></i><span>Diperiksa dengan teliti<br>untuk pembeli & penjual</span></div>
         </section>
 
         <section class="about-story">
             <div class="about-container about-story-grid">
                 <div class="about-story-intro about-reveal">
                     <div class="about-kicker">CERITA KAMI</div>
-                    <h2>Mobil yang tepat membuat perjalanan terasa <span>lebih berarti.</span></h2>
+                    <h2>Jual atau beli mobil,<br>tanpa rasa <span>ragu.</span></h2>
                 </div>
                 <div class="about-story-copy about-reveal">
-                    <p>{{ $siteName }} lahir dari satu keyakinan sederhana: membeli mobil bekas tidak seharusnya membuat orang ragu atau merasa terburu-buru.</p>
-                    <p>Kami memilih setiap unit dengan teliti, menyampaikan kondisi apa adanya, dan mendampingi kamu sejak konsultasi sampai mobil siap digunakan.</p>
+                    <p>{{ $siteName }} lahir dari satu keyakinan sederhana: jual beli mobil bekas tidak seharusnya membuat orang ragu atau merasa terburu-buru.</p>
+                    <p>Kami memilih setiap unit dengan teliti, menyampaikan kondisi apa adanya, dan mendampingi kamu sejak konsultasi, penilaian, sampai mobil siap digunakan atau terjual.</p>
                     <p>Karena bagi kami, transaksi bukan akhir perjalanan. Hubungan baik dengan pelanggan adalah bagian dari layanan.</p>
                 </div>
             </div>
@@ -63,19 +63,19 @@
 
         <section class="about-steps">
             <div class="about-container about-steps-grid">
-                <div class="about-reveal"><div class="about-kicker">CARA KAMI BEKERJA</div><h2>Lebih tenang<br>memilih mobil.</h2><p>Kami membuat setiap tahap terasa jelas, sehingga kamu bisa mengambil keputusan dengan percaya diri.</p></div>
+                <div class="about-reveal"><div class="about-kicker">CARA KAMI BEKERJA</div><h2>Lebih tenang<br>jual atau beli.</h2><p>Kami membuat setiap tahap terasa jelas, sehingga kamu bisa mengambil keputusan dengan percaya diri.</p></div>
                 <div class="about-step-list">
-                    <div class="about-step about-reveal"><b>01</b><span><strong>Dengarkan kebutuhanmu</strong><small>Budget, gaya hidup, dan rencana perjalanan jadi awal rekomendasi kami.</small></span></div>
-                    <div class="about-step about-reveal"><b>02</b><span><strong>Kurasi unit terbaik</strong><small>Kami cocokkan kebutuhanmu dengan unit yang tersedia dan layak dipertimbangkan.</small></span></div>
-                    <div class="about-step about-reveal"><b>03</b><span><strong>Temani sampai siap jalan</strong><small>Inspeksi, test drive, dan dokumen kami bantu sampai proses selesai.</small></span></div>
+                    <div class="about-step about-reveal"><b>01</b><span><strong>Dengarkan kebutuhanmu</strong><small>Mau membeli atau menjual? Budget, kondisi mobil, dan rencanamu jadi awal kami membantu.</small></span></div>
+                    <div class="about-step about-reveal"><b>02</b><span><strong>Kurasi unit atau nilai mobil</strong><small>Kami cocokkan kebutuhanmu dengan unit tersedia atau beri penilaian untuk mobil yang ingin dijual.</small></span></div>
+                    <div class="about-step about-reveal"><b>03</b><span><strong>Temani sampai selesai</strong><small>Inspeksi, test drive, pembayaran, dan dokumen kami bantu sampai proses selesai.</small></span></div>
                 </div>
             </div>
         </section>
 
         <section class="about-contact">
             <div class="about-container about-contact-inner about-reveal">
-                <div><div class="about-kicker">SIAP MEMULAI?</div><h2>Temukan mobil yang<br>cocok dengan ceritamu.</h2></div>
-                <div><p>Ceritakan kebutuhanmu. Tim kami siap membantu tanpa tekanan.</p><a href="{{ $whatsappUrl }}" target="_blank" rel="noopener noreferrer" class="about-button about-button-light"><i class="fab fa-whatsapp"></i> Konsultasi gratis</a><a href="tel:{{ $phone }}" class="about-phone"><i class="fas fa-phone"></i> {{ $phone }}</a></div>
+                <div><div class="about-kicker">SIAP MEMULAI?</div><h2>Siap jual atau beli<br>mobil bekas?</h2></div>
+                <div><p>Ceritakan kebutuhanmu. Tim kami siap membantu pembelian maupun penjualan tanpa tekanan.</p><a href="{{ $whatsappUrl }}" target="_blank" rel="noopener noreferrer" class="about-button about-button-light"><i class="fab fa-whatsapp"></i> Konsultasi gratis</a><a href="tel:{{ $phone }}" class="about-phone"><i class="fas fa-phone"></i> {{ $phone }}</a></div>
             </div>
         </section>
     </div>

@@ -9,7 +9,7 @@
         ],
         'kontak' => [
             'label' => 'Kontak',
-            'description' => 'Nomor dan email yang digunakan calon pembeli untuk menghubungi showroom.',
+            'description' => 'Nomor dan email yang digunakan calon pembeli maupun penjual untuk menghubungi showroom.',
             'icon' => 'fas fa-address-book',
         ],
         'lokasi' => [

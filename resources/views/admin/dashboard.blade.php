@@ -1248,7 +1248,7 @@
                         <span class="dash-panel-icon"><i class="fas fa-inbox"></i></span>
                         <div>
                             <h5>Lead Terbaru</h5>
-                            <p>Permintaan terakhir dari calon pembeli</p>
+                            <p>Permintaan terbaru dari calon pembeli & penjual</p>
                         </div>
                     </div>
                     <a href="{{ route('admin.leads') }}" class="dash-panel-link">

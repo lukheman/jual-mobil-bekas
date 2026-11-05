@@ -1233,7 +1233,7 @@
 @endpush
 
 <x-layouts.app title="Lead - RodaTa Admin">
-    <x-layout.page-header title="Lead" subtitle="Kelola calon pembeli, status, dan tindak lanjutnya">
+    <x-layout.page-header title="Lead" subtitle="Kelola calon pembeli & penjual, status, dan tindak lanjutnya">
     </x-layout.page-header>
 
     {{-- Ringkasan lead --}}
@@ -1621,7 +1621,7 @@
                 <div class="lead-message">
                     <span class="lead-message-label">
                         <i class="fas fa-quote-left"></i>
-                        Pesan dari calon pembeli
+                        Pesan dari calon pembeli / penjual
                     </span>
                     <p>{{ $editingLead->message }}</p>
                 </div>

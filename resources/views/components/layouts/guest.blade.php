@@ -1,6 +1,6 @@
 @props([
-    'title' => 'RodaTa — Mobil Bekas Terpercaya',
-    'description' => 'Temukan mobil bekas berkualitas dengan harga transparan dan proses mudah di RodaTa.',
+    'title' => 'RodaTa — Jual Beli Mobil Bekas Terpercaya',
+    'description' => 'Jual beli mobil bekas berkualitas dengan harga transparan dan proses mudah di RodaTa.',
     'type' => 'guest',
     'settings' => [],
 ])
@@ -9,8 +9,8 @@
     $storedSettings = \App\Models\Setting::query()->pluck('value', 'key')->all();
     $settings = array_merge($storedSettings, (array) $settings);
     $siteName = filled($settings['site_name'] ?? null) ? $settings['site_name'] : 'RodaTa';
-    $title = str_replace(['RodaTa', 'MobilTa'], $siteName, $title ?: $siteName.' — Mobil Bekas Terpercaya');
-    $description = str_replace(['RodaTa', 'MobilTa'], $siteName, $description ?: 'Temukan mobil bekas berkualitas dengan harga transparan dan proses mudah di '.$siteName.'.');
+    $title = str_replace(['RodaTa', 'MobilTa'], $siteName, $title ?: $siteName.' — Jual Beli Mobil Bekas Terpercaya');
+    $description = str_replace(['RodaTa', 'MobilTa'], $siteName, $description ?: 'Jual beli mobil bekas berkualitas dengan harga transparan dan proses mudah di '.$siteName.'.');
 
     $socialLinks = collect([
         ['key' => 'facebook_url', 'icon' => 'fab fa-facebook-f', 'label' => 'Facebook'],
@@ -916,7 +916,7 @@
                 <li><a href="/#stok" class="site-nav-link">Stok Mobil</a></li>
                 <li><a href="{{ route('sell-car') }}" class="site-nav-link">Jual Mobil</a></li>
                 <li><a href="/#keunggulan" class="site-nav-link">Kenapa Kami</a></li>
-                <li><a href="/#proses" class="site-nav-link">Cara Beli</a></li>
+                <li><a href="/#proses" class="site-nav-link">Cara Jual Beli</a></li>
                 <li><a href="/#kontak" class="site-nav-link">Kontak</a></li>
             </ul>
 
@@ -924,7 +924,7 @@
                 <button class="theme-toggle" onclick="toggleTheme()">
                     <i class="fas fa-moon" id="theme-icon"></i>
                 </button>
-                <a href="https://wa.me/{{ $settings['whatsapp_number'] ?? '6281234567890' }}?text={{ rawurlencode('Halo '.$siteName.', saya ingin konsultasi mobil bekas.') }}" target="_blank" rel="noopener noreferrer" class="btn-nav btn-nav-outline"><i class="fab fa-whatsapp"></i> Hubungi Kami</a>
+                <a href="https://wa.me/{{ $settings['whatsapp_number'] ?? '6281234567890' }}?text={{ rawurlencode('Halo '.$siteName.', saya ingin konsultasi jual beli mobil bekas.') }}" target="_blank" rel="noopener noreferrer" class="btn-nav btn-nav-outline"><i class="fab fa-whatsapp"></i> Hubungi Kami</a>
                 <button type="button" class="mobile-menu-btn" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="mobile-menu">
                     <i class="fas fa-bars mobile-menu-icon-open"></i>
                     <i class="fas fa-xmark mobile-menu-icon-close"></i>
@@ -937,11 +937,11 @@
                 <li><a href="/#stok"><i class="fas fa-car"></i> Stok Mobil</a></li>
                 <li><a href="{{ route('sell-car') }}"><i class="fas fa-hand-holding-dollar"></i> Jual Mobil</a></li>
                 <li><a href="/#keunggulan"><i class="fas fa-shield-halved"></i> Kenapa Kami</a></li>
-                <li><a href="/#proses"><i class="fas fa-route"></i> Cara Beli</a></li>
+                <li><a href="/#proses"><i class="fas fa-route"></i> Cara Jual Beli</a></li>
                 <li><a href="/#testimoni"><i class="fas fa-star"></i> Testimoni</a></li>
                 <li><a href="/#kontak"><i class="fas fa-envelope"></i> Kontak</a></li>
             </ul>
-            <a href="https://wa.me/{{ $settings['whatsapp_number'] ?? '6281234567890' }}?text={{ rawurlencode('Halo '.$siteName.', saya ingin konsultasi mobil bekas.') }}" target="_blank" rel="noopener noreferrer" class="mobile-menu-cta">
+            <a href="https://wa.me/{{ $settings['whatsapp_number'] ?? '6281234567890' }}?text={{ rawurlencode('Halo '.$siteName.', saya ingin konsultasi jual beli mobil bekas.') }}" target="_blank" rel="noopener noreferrer" class="mobile-menu-cta">
                 <i class="fab fa-whatsapp"></i> Hubungi Kami
             </a>
         </div>
@@ -972,7 +972,7 @@
                             <i class="fas fa-car-side"></i>
                             <span>{{ $siteName }}</span>
                         </a>
-                         <p>Teman perjalanan Anda menemukan mobil bekas berkualitas, jujur, dan siap jalan.</p>
+                         <p>Mitra jual beli mobil bekas yang jujur, transparan, dan siap membantu.</p>
                     </div>
 
                     <div class="footer-links">
@@ -983,7 +983,7 @@
                                  <li><a href="#stok">Stok Mobil</a></li>
                                  <li><a href="{{ route('sell-car') }}">Jual Mobil</a></li>
                                  <li><a href="#keunggulan">Keunggulan</a></li>
-                                 <li><a href="#proses">Cara Beli</a></li>
+                                 <li><a href="#proses">Cara Jual Beli</a></li>
                                  <li><a href="#kontak">Kontak</a></li>
                             </ul>
                         </div>
@@ -992,6 +992,7 @@
                             <ul>
                                  <li><a href="#">Inspeksi unit</a></li>
                                  <li><a href="#">Test drive</a></li>
+                                 <li><a href="{{ route('sell-car') }}">Jual mobil</a></li>
                                  <li><a href="#">Tukar tambah</a></li>
                                  <li><a href="#">Bantuan</a></li>
                             </ul>
