@@ -9,7 +9,9 @@ use App\Models\Brand;
 use App\Models\Car;
 use App\Models\ClickLog;
 use App\Models\Lead;
+use App\Models\PageView;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -38,6 +40,69 @@ class DashboardController extends Controller
             ->selectRaw('type, count(*) as total')
             ->groupBy('type')
             ->pluck('total', 'type');
+
+        $todayStart = now()->startOfDay();
+        $weekStart = now()->subDays(6)->startOfDay();
+
+        $visitorTimestamps = PageView::query()
+            ->where('created_at', '>=', $weekStart)
+            ->get(['created_at'])
+            ->countBy(fn (PageView $view) => $view->created_at->toDateString());
+
+        $visitorTrend = collect(range(0, 6))->map(function (int $offset) use ($weekStart, $visitorTimestamps): array {
+            $date = $weekStart->copy()->addDays($offset);
+
+            return [
+                'date' => $date,
+                'label' => $date->translatedFormat('D'),
+                'full_label' => $date->translatedFormat('d M'),
+                'total' => (int) ($visitorTimestamps[$date->toDateString()] ?? 0),
+                'is_today' => $date->isToday(),
+            ];
+        });
+
+        $weekViews = (int) $visitorTrend->sum('total');
+        $previousWeekViews = PageView::query()
+            ->whereBetween('created_at', [now()->subDays(13)->startOfDay(), now()->subDays(7)->endOfDay()])
+            ->count();
+
+        $visitorDelta = $previousWeekViews > 0
+            ? (int) round(($weekViews - $previousWeekViews) / $previousWeekViews * 100)
+            : ($weekViews > 0 ? 100 : 0);
+
+        $visitorStats = [
+            'total_views' => PageView::query()->count(),
+            'unique_visitors' => PageView::query()->distinct()->count('visitor_hash'),
+            'today_views' => PageView::query()->where('created_at', '>=', $todayStart)->count(),
+            'today_visitors' => PageView::query()->where('created_at', '>=', $todayStart)->distinct()->count('visitor_hash'),
+            'week_views' => $weekViews,
+            'week_visitors' => PageView::query()->where('created_at', '>=', $weekStart)->distinct()->count('visitor_hash'),
+        ];
+
+        $pageLabels = [
+            'home' => 'Beranda',
+            'about' => 'Tentang Kami',
+            'sell-car' => 'Jual Mobil',
+            'cars.show' => 'Detail Mobil',
+        ];
+
+        $topPages = PageView::query()
+            ->selectRaw('COALESCE(route_name, path) as page_key, count(*) as views, count(distinct visitor_hash) as visitors')
+            ->groupByRaw('COALESCE(route_name, path)')
+            ->orderByDesc('views')
+            ->take(5)
+            ->get()
+            ->map(function (PageView $page) use ($pageLabels): array {
+                $key = (string) $page->page_key;
+                $label = $pageLabels[$key]
+                    ?? (str_starts_with($key, 'mobil/') ? 'Detail Mobil' : Str::headline(str_replace(['/', '-', '_'], ' ', $key)));
+
+                return [
+                    'label' => $label,
+                    'views' => (int) $page->views,
+                    'visitors' => (int) $page->visitors,
+                ];
+            });
 
         $trendStart = now()->subDays(6)->startOfDay();
         $leadTimestamps = Lead::query()
@@ -108,6 +173,10 @@ class DashboardController extends Controller
             'leadStatuses' => LeadStatus::cases(),
             'trendTotal' => $trendTotal,
             'trendDelta' => $trendDelta,
+            'visitorStats' => $visitorStats,
+            'visitorTrend' => $visitorTrend,
+            'visitorDelta' => $visitorDelta,
+            'topPages' => $topPages,
             'recentLeads' => Lead::query()
                 ->with('car.carModel.brand')
                 ->latest()

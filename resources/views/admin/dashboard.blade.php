@@ -53,6 +53,17 @@
     });
     $trendMax = max(1, (int) $leadTrend->max('total'));
 
+    $visitorTrend = $visitorTrend->map(function (array $day) use ($dayLabels): array {
+        $day['label'] = $dayLabels[$day['date']->dayOfWeek];
+
+        return $day;
+    });
+    $visitorTrendMax = max(1, (int) $visitorTrend->max('total'));
+    $visitorDeltaClass = $visitorDelta > 0 ? 'is-up' : ($visitorDelta < 0 ? 'is-down' : 'is-flat');
+    $visitorDeltaIcon = $visitorDelta > 0
+        ? 'fas fa-arrow-trend-up'
+        : ($visitorDelta < 0 ? 'fas fa-arrow-trend-down' : 'fas fa-minus');
+
     $deltaClass = $trendDelta > 0 ? 'is-up' : ($trendDelta < 0 ? 'is-down' : 'is-flat');
     $deltaIcon = $trendDelta > 0
         ? 'fas fa-arrow-trend-up'
@@ -1017,6 +1028,119 @@
             font-size: 0.68rem;
         }
 
+        /* Statistik pengunjung */
+        .dash-visitor-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 0.6rem;
+            margin-bottom: 1.15rem;
+        }
+
+        .dash-visitor-metric {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.6rem 0.65rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+        }
+
+        .dash-visitor-icon {
+            display: grid;
+            place-items: center;
+            width: 30px;
+            height: 30px;
+            flex-shrink: 0;
+            border-radius: 7px;
+            background: rgba(29, 91, 66, 0.1);
+            color: var(--bs-primary);
+            font-size: 0.72rem;
+        }
+
+        .dash-visitor-copy strong {
+            display: block;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        .dash-visitor-copy small {
+            display: block;
+            margin-top: 2px;
+            color: var(--text-muted);
+            font-size: 0.62rem;
+        }
+
+        .dash-page-row {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 0.25rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .dash-page-row:last-child {
+            border-bottom: none;
+        }
+
+        .dash-page-rank {
+            display: grid;
+            place-items: center;
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            font-size: 0.62rem;
+            font-weight: 700;
+        }
+
+        .dash-page-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .dash-page-main strong {
+            display: block;
+            color: var(--text-primary);
+            font-size: 0.78rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .dash-page-main small {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.64rem;
+        }
+
+        .dash-page-views {
+            color: var(--bs-primary);
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        @media (max-width: 767.98px) {
+            .dash-visitor-metrics {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .dash-visitor-metrics {
+                gap: 0.5rem;
+            }
+
+            .dash-visitor-metric {
+                padding: 0.5rem;
+            }
+        }
+
         @media (max-width: 1199.98px) {
             .dash-stats {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1112,7 +1236,7 @@
 <x-layouts.app title="Dashboard - RodaTa Admin">
     <x-layout.page-header
         title="Dashboard Overview"
-        :subtitle="($userName ? 'Selamat datang kembali, '.$userName.'. ' : '').'Ringkasan performa inventaris dan lead RodaTa.'"
+        :subtitle="($userName ? 'Selamat datang kembali, '.$userName.'. ' : '').'Ringkasan performa inventaris, lead, dan pengunjung RodaTa.'"
     >
         <x-slot:actions>
             <div class="d-flex flex-wrap gap-2">
@@ -1234,6 +1358,126 @@
                             </div>
                         @endforeach
                     </div>
+                </div>
+            </x-layout.modern-card>
+        </div>
+    </div>
+
+    {{-- Statistik pengunjung --}}
+    <div class="dash-grid">
+        <div class="dash-span-8">
+            <x-layout.modern-card :padding="false" class="dash-panel">
+                <div class="dash-panel-head">
+                    <div class="dash-panel-title">
+                        <span class="dash-panel-icon"><i class="fas fa-users"></i></span>
+                        <div>
+                            <h5>Statistik Pengunjung</h5>
+                            <p>Kunjungan halaman publik situs</p>
+                        </div>
+                    </div>
+                    <span class="dash-panel-link">7 hari terakhir</span>
+                </div>
+                <div class="dash-panel-body">
+                    <div class="dash-visitor-metrics">
+                        <div class="dash-visitor-metric">
+                            <span class="dash-visitor-icon"><i class="fas fa-eye"></i></span>
+                            <span class="dash-visitor-copy">
+                                <strong>{{ number_format($visitorStats['total_views'], 0, ',', '.') }}</strong>
+                                <small>Total kunjungan</small>
+                            </span>
+                        </div>
+                        <div class="dash-visitor-metric">
+                            <span class="dash-visitor-icon"><i class="fas fa-user-group"></i></span>
+                            <span class="dash-visitor-copy">
+                                <strong>{{ number_format($visitorStats['unique_visitors'], 0, ',', '.') }}</strong>
+                                <small>Pengunjung unik</small>
+                            </span>
+                        </div>
+                        <div class="dash-visitor-metric">
+                            <span class="dash-visitor-icon"><i class="fas fa-calendar-day"></i></span>
+                            <span class="dash-visitor-copy">
+                                <strong>{{ number_format($visitorStats['today_views'], 0, ',', '.') }}</strong>
+                                <small>Kunjungan hari ini</small>
+                            </span>
+                        </div>
+                        <div class="dash-visitor-metric">
+                            <span class="dash-visitor-icon"><i class="fas fa-user-check"></i></span>
+                            <span class="dash-visitor-copy">
+                                <strong>{{ number_format($visitorStats['today_visitors'], 0, ',', '.') }}</strong>
+                                <small>Pengunjung hari ini</small>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="dash-chart-head">
+                        <div class="dash-chart-total">
+                            <strong>{{ number_format($visitorStats['week_views'], 0, ',', '.') }}</strong>
+                            <span>kunjungan dalam 7 hari</span>
+                        </div>
+                        <div class="dash-chart-compare">
+                            <span class="dash-chart-delta {{ $visitorDeltaClass }}">
+                                <i class="{{ $visitorDeltaIcon }}"></i>
+                                {{ $visitorDelta > 0 ? '+' : '' }}{{ $visitorDelta }}%
+                            </span>
+                            <small>dibanding 7 hari sebelumnya</small>
+                        </div>
+                    </div>
+
+                    <div class="dash-chart">
+                        @foreach ($visitorTrend as $day)
+                            @php
+                                $barHeight = $day['total'] > 0
+                                    ? max(6, (int) round($day['total'] / $visitorTrendMax * 100))
+                                    : 4;
+                            @endphp
+                            <div class="dash-chart-col"
+                                 title="{{ $day['label'] }}, {{ $day['full_label'] }} — {{ $day['total'] }} kunjungan">
+                                <span class="dash-chart-value">{{ $day['total'] }}</span>
+                                <div class="dash-chart-track">
+                                    <span class="dash-chart-bar {{ $day['is_today'] ? 'is-today' : '' }} {{ $day['total'] > 0 ? '' : 'is-zero' }}"
+                                          style="height: {{ $barHeight }}%;"></span>
+                                </div>
+                                <span class="dash-chart-label {{ $day['is_today'] ? 'is-today' : '' }}">
+                                    {{ $day['label'] }}
+                                </span>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </x-layout.modern-card>
+        </div>
+
+        <div class="dash-span-4">
+            <x-layout.modern-card :padding="false" class="dash-panel">
+                <div class="dash-panel-head">
+                    <div class="dash-panel-title">
+                        <span class="dash-panel-icon"><i class="fas fa-ranking-star"></i></span>
+                        <div>
+                            <h5>Halaman Terpopuler</h5>
+                            <p>Berdasarkan jumlah kunjungan</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="dash-panel-body">
+                    @if ($topPages->isEmpty())
+                        <div class="dash-panel-empty">
+                            <i class="fas fa-chart-simple"></i>
+                            <span>Belum ada data kunjungan.</span>
+                        </div>
+                    @else
+                        <div class="dash-list">
+                            @foreach ($topPages as $page)
+                                <div class="dash-page-row">
+                                    <span class="dash-page-rank">{{ $loop->iteration }}</span>
+                                    <span class="dash-page-main">
+                                        <strong>{{ $page['label'] }}</strong>
+                                        <small>{{ number_format($page['visitors'], 0, ',', '.') }} pengunjung unik</small>
+                                    </span>
+                                    <span class="dash-page-views">{{ number_format($page['views'], 0, ',', '.') }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             </x-layout.modern-card>
         </div>
@@ -1450,7 +1694,7 @@
     <div class="dash-footnote">
         <span>
             <i class="fas fa-circle-info me-1"></i>
-            Data dihitung langsung dari inventaris, lead, dan log klik.
+            Data dihitung langsung dari inventaris, lead, log klik, dan kunjungan halaman.
         </span>
         <span>Diperbarui {{ now()->format('d/m/Y H:i') }}</span>
     </div>
