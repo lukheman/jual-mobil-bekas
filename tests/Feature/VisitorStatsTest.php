@@ -20,6 +20,32 @@ test('admin pages are not tracked as visitor views', function () {
     expect(PageView::query()->count())->toBe(0);
 });
 
+test('the landing page displays public visitor statistics', function () {
+    PageView::create([
+        'path' => '/',
+        'route_name' => 'home',
+        'visitor_hash' => hash('sha256', 'visitor-one'),
+        'ip_hash' => hash('sha256', '127.0.0.1'),
+        'created_at' => now(),
+    ]);
+    PageView::create([
+        'path' => '/tentang-kami',
+        'route_name' => 'about',
+        'visitor_hash' => hash('sha256', 'visitor-two'),
+        'ip_hash' => hash('sha256', '127.0.0.2'),
+        'created_at' => now(),
+    ]);
+
+    $this->get('/')
+        ->assertOk()
+        ->assertSee('id="statistik"', false)
+        ->assertSee('STATISTIK PENGUNJUNG')
+        ->assertSee('Total kunjungan')
+        ->assertSee('Pengunjung unik')
+        ->assertSee('Kunjungan hari ini')
+        ->assertSee('Kunjungan 7 hari terakhir');
+});
+
 test('the dashboard displays visitor statistics', function () {
     $user = User::factory()->create();
 

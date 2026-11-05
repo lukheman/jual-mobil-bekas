@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Car;
 use App\Models\Faq;
+use App\Models\PageView;
 use App\Models\Setting;
 use Illuminate\View\View;
 
@@ -40,8 +41,16 @@ class LandingPageController extends Controller
             ->limit(8)
             ->get();
 
+        $visitorStats = [
+            'total_views' => PageView::query()->count(),
+            'unique_visitors' => PageView::query()->distinct()->count('visitor_hash'),
+            'today_views' => PageView::query()->where('created_at', '>=', now()->startOfDay())->count(),
+            'week_views' => PageView::query()->where('created_at', '>=', now()->subDays(6)->startOfDay())->count(),
+        ];
+
         return view('guest.landing-page', [
             'latestCars' => $latestCars,
+            'visitorStats' => $visitorStats,
             'filters' => $filters,
             'brands' => Brand::query()->withCount(['cars' => fn ($query) => $query->available()])->orderBy('name')->get(),
             'faqs' => Faq::published()->limit(5)->get(),
